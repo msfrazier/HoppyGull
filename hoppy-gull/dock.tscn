@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://4usr2rytpd3u"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1kr1d"]
+size = Vector3(2, 0.1, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1kr1d"]
+albedo_color = Color(0.91145927, 0, 0.062447056, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1kr1d"]
+material = SubResource("StandardMaterial3D_1kr1d")
+size = Vector3(2, 0.1, 0.4)
+
+[node name="dock" type="AnimatableBody3D"]
+
+[node name="plank_col" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.050072506, 0)
+shape = SubResource("BoxShape3D_1kr1d")
+
+[node name="plank_mesh" type="MeshInstance3D" parent="plank_col"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.2505325e-05, 0)
+mesh = SubResource("BoxMesh_1kr1d")
+skeleton = NodePath("../..")

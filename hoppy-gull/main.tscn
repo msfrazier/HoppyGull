@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://byovfrpxavwkx"]
+
+[ext_resource type="PackedScene" uid="uid://ce6on0dc1jgp1" path="res://gull.tscn" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://4usr2rytpd3u" path="res://dock.tscn" id="2_0xm2m"]
+
+[node name="main" type="Node3D"]
+
+[node name="gull" parent="." instance=ExtResource("1_ig7tw")]
+
+[node name="camera" type="Camera3D" parent="gull"]
+transform = Transform3D(-1, -4.7731515e-08, 7.3242354e-08, 0, 0.83779496, 0.5459849, -8.742277e-08, 0.5459849, -0.83779496, 0, 1.6605778, -1.2919896)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.44285223, 0.89659464, 0, -0.89659464, -0.44285223, 0, 17.120935, -7.9684277)
+
+[node name="dock" parent="." instance=ExtResource("2_0xm2m")]
+
+[editable path="gull"]

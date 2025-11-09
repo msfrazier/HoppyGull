@@ -1,0 +1,83 @@
+[gd_scene load_steps=4 format=3 uid="uid://ce6on0dc1jgp1"]
+
+[sub_resource type="GDScript" id="GDScript_wbb4c"]
+script/source = "extends CharacterBody3D
+
+
+const SPEED = 1.5
+
+var final_position : Vector3
+var movement_dist : float
+
+func _ready() -> void:
+	final_position = position
+	movement_dist = $CollisionShape3D.shape.radius * 2
+	
+func _physics_process(delta: float) -> void:
+	# Add the gravity.
+	#if not is_on_floor():
+		#velocity += get_gravity() * delta
+
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	#if Input.is_action_just_pressed(\"ui_left\") || \\
+	#Input.is_action_just_pressed(\"ui_right\") || \\
+	#Input.is_action_just_pressed(\"ui_up\"):
+		#var input_dir := Input.get_vector(\"ui_left\", \"ui_right\", \"ui_up\", \"ui_down\")
+			#
+		#var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		#if direction:
+			#velocity.x = direction.x * SPEED
+			#velocity.z = direction.z * SPEED
+		#else:
+			#velocity.x = move_toward(velocity.x, 0, SPEED)
+			#velocity.z = move_toward(velocity.z, 0, SPEED)
+			
+	
+	if (final_position-position).length() >= 1e-4:
+		move_and_slide()
+	else:
+		velocity = Vector3.ZERO
+	pass
+		
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed(\"ui_left\") and velocity.is_zero_approx():
+		var direction := (transform.basis * Vector3(1,0,0)).normalized()
+		velocity.x = direction.x * SPEED
+		velocity.z = direction.z * SPEED
+		final_position = position + Vector3(movement_dist,0,0)
+		print(final_position)
+	elif event.is_action_pressed(\"ui_right\") and velocity.is_zero_approx():
+		var direction := (transform.basis * Vector3(-1,0,0)).normalized()
+		velocity.x = direction.x * SPEED
+		velocity.z = direction.z * SPEED
+		final_position = position + Vector3(-movement_dist,0,0)
+		print(final_position)
+	elif event.is_action_pressed(\"ui_up\") and velocity.is_zero_approx():
+		var direction := (transform.basis * Vector3(0,0,1)).normalized()
+		velocity.x = direction.x * SPEED
+		velocity.z = direction.z * SPEED
+		final_position = position + Vector3(0,0,movement_dist)
+		print(final_position)
+"
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_wbb4c"]
+height = 0.5
+radius = 0.2
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_2sgct"]
+top_radius = 0.2
+bottom_radius = 0.2
+height = 0.5
+
+[node name="gull" type="CharacterBody3D"]
+script = SubResource("GDScript_wbb4c")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_wbb4c")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00012497604, 0)
+mesh = SubResource("CylinderMesh_2sgct")
+skeleton = NodePath("../..")
