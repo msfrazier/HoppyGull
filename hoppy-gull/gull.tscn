@@ -4,10 +4,13 @@
 script/source = "extends CharacterBody3D
 
 
-const SPEED = 1.5
+const SPEED = 3
 
 var final_position : Vector3
 var movement_dist : float
+
+signal create_plank
+signal check_position
 
 func _ready() -> void:
 	final_position = position
@@ -34,31 +37,33 @@ func _physics_process(delta: float) -> void:
 			#velocity.z = move_toward(velocity.z, 0, SPEED)
 			
 	
-	if (final_position-position).length() >= 1e-4:
+	if (final_position-position).length() >= 1e-2:
 		move_and_slide()
 	else:
 		velocity = Vector3.ZERO
 	pass
 		
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed(\"ui_left\") and velocity.is_zero_approx():
+	if event.is_action(\"ui_left\") and velocity.is_zero_approx():
+		final_position = (position + Vector3(movement_dist,0,0)).snappedf(0.1)
 		var direction := (transform.basis * Vector3(1,0,0)).normalized()
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
-		final_position = position + Vector3(movement_dist,0,0)
-		print(final_position)
-	elif event.is_action_pressed(\"ui_right\") and velocity.is_zero_approx():
+		check_position.emit(final_position, false)
+	elif event.is_action(\"ui_right\") and velocity.is_zero_approx():
+		final_position = (position + Vector3(-movement_dist,0,0)).snappedf(0.1)
 		var direction := (transform.basis * Vector3(-1,0,0)).normalized()
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
-		final_position = position + Vector3(-movement_dist,0,0)
-		print(final_position)
-	elif event.is_action_pressed(\"ui_up\") and velocity.is_zero_approx():
+		check_position.emit(final_position, false)
+	elif event.is_action(\"ui_up\") and velocity.is_zero_approx():
+		final_position = (position + Vector3(0,0,movement_dist)).snappedf(0.1)
 		var direction := (transform.basis * Vector3(0,0,1)).normalized()
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
-		final_position = position + Vector3(0,0,movement_dist)
-		print(final_position)
+		create_plank.emit()
+		check_position.emit(final_position, true)
+		
 "
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_wbb4c"]

@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://b784ohtqpqrfl"]
+
+[ext_resource type="MeshLibrary" uid="uid://chtei0dhge5wd" path="res://mesh/meshLibrary.tres" id="1_lq4m8"]
+
+[node name="GridMap" type="GridMap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.05, 0.2)
+mesh_library = ExtResource("1_lq4m8")
+cell_size = Vector3(0.4, 1, 0.4)
+cell_center_y = false
+cell_scale = 0.5
+data = {
+"cells": PackedInt32Array(65535, 65535, 0, 0, 65535, 0, 1, 65535, 0, 65534, 65535, 0, 65533, 65535, 0, 65532, 65535, 0, 2, 65535, 0)
+}

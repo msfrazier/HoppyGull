@@ -1,9 +1,35 @@
-[gd_scene load_steps=3 format=3 uid="uid://byovfrpxavwkx"]
+[gd_scene load_steps=7 format=3 uid="uid://byovfrpxavwkx"]
 
 [ext_resource type="PackedScene" uid="uid://ce6on0dc1jgp1" path="res://gull.tscn" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://ck58xg1mvjsfn" path="res://main.gd" id="1_lquwl"]
 [ext_resource type="PackedScene" uid="uid://4usr2rytpd3u" path="res://dock.tscn" id="2_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://d2ml1r6tf8bth" path="res://dock_2.tscn" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://b784ohtqpqrfl" path="res://grid_map.tscn" id="4_1bvp3"]
+
+[sub_resource type="GDScript" id="GDScript_lquwl"]
+script/source = "extends Label
+
+@onready var score = 0
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	text = \"Score: %s\" % score
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+func _on_main_increase_score() -> void:
+	score = score + 1
+	text = \"Score: %s\" % score
+	pass # Replace with function body.
+"
 
 [node name="main" type="Node3D"]
+script = ExtResource("1_lquwl")
 
 [node name="gull" parent="." instance=ExtResource("1_ig7tw")]
 
@@ -14,5 +40,30 @@ transform = Transform3D(-1, -4.7731515e-08, 7.3242354e-08, 0, 0.83779496, 0.5459
 transform = Transform3D(1, 0, 0, 0, -0.44285223, 0.89659464, 0, -0.89659464, -0.44285223, 0, 17.120935, -7.9684277)
 
 [node name="dock" parent="." instance=ExtResource("2_0xm2m")]
+visible = false
+
+[node name="AnimatableBody3D" parent="." instance=ExtResource("3_h2yge")]
+visible = false
+
+[node name="GridMap" parent="." instance=ExtResource("4_1bvp3")]
+data = {
+"cells": PackedInt32Array()
+}
+
+[node name="score_control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="score_label" type="Label" parent="score_control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+script = SubResource("GDScript_lquwl")
+
+[connection signal="increase_score" from="." to="score_control/score_label" method="_on_main_increase_score"]
+[connection signal="check_position" from="gull" to="." method="_on_gull_check_position"]
+[connection signal="create_plank" from="gull" to="." method="_on_gull_create_plank"]
 
 [editable path="gull"]

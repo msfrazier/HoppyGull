@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=3 uid="uid://cmjhacx4w5v5m"]
+
+[ext_resource type="PackedScene" uid="uid://bw7cw54rlwqhf" path="res://mesh/rounded_plank.glb" id="1_jxc1h"]
+[ext_resource type="MeshLibrary" uid="uid://chtei0dhge5wd" path="res://mesh/meshLibrary.tres" id="2_3wd3n"]
+
+[sub_resource type="GDScript" id="GDScript_3wd3n"]
+script/source = "class_name plank
+extends Node3D
+
+@export var tile_arr := Array()
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+func build_plank(tile_arr):
+	for tile in tile_arr:
+		
+"
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_vd2kw"]
+points = PackedVector3Array(-1, 0.6820279, -1, 1, 0.6820279, -1, -1, 0.6820279, 1, 1, 0.6820279, 1)
+
+[node name="plank_object" type="Node3D"]
+script = SubResource("GDScript_3wd3n")
+
+[node name="rounded_plank" parent="." instance=ExtResource("1_jxc1h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+visible = false
+
+[node name="StaticBody3D" type="StaticBody3D" parent="rounded_plank"]
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="rounded_plank/StaticBody3D"]
+transform = Transform3D(0.4, 0, 0, 0, 0.1, 0, 0, 0, 0.4, 0, 0.03, 0)
+shape = SubResource("ConvexPolygonShape3D_vd2kw")
+
+[node name="GridMap" type="GridMap" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, -0.5, 0.4)
+mesh_library = ExtResource("2_3wd3n")
+cell_size = Vector3(0.8, 1, 0.8)
+
+[editable path="rounded_plank"]

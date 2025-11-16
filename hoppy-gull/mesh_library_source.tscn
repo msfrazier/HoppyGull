@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://djrm8dpbrg6ie"]
+
+[ext_resource type="PackedScene" uid="uid://bw7cw54rlwqhf" path="res://mesh/rounded_plank.glb" id="1_xdm1l"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_xdm1l"]
+points = PackedVector3Array(-1, 0.6820279, -1, 1, 0.6820279, -1, -1, 0.6820279, 1, 1, 0.6820279, 1)
+
+[sub_resource type="PointMesh" id="PointMesh_xdm1l"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_6sru8"]
+
+[node name="meshLibrarySource" type="Node3D"]
+
+[node name="rounded_plank" parent="." instance=ExtResource("1_xdm1l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="rounded_plank"]
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="rounded_plank/StaticBody3D"]
+transform = Transform3D(0.4, 0, 0, 0, 0.1, 0, 0, 0, 0.4, 0, 0.03, 0)
+shape = SubResource("ConvexPolygonShape3D_xdm1l")
+
+[node name="empty_plank" type="Node3D" parent="." groups=["danger_tile"]]
+
+[node name="empty_plank" type="MeshInstance3D" parent="empty_plank"]
+mesh = SubResource("PointMesh_xdm1l")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="empty_plank"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="empty_plank/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_6sru8")
+
+[editable path="rounded_plank"]
