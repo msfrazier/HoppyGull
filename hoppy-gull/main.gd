@@ -2,11 +2,16 @@ extends Node3D
 
 @onready var gridMap := $GridMap
 @onready var gull := $gull
+@onready var kill_screen := $score_control/kill_screen
 @onready var dock = Array(Array())
+@onready var screen_size: Vector2
 
 signal increase_score
+signal exit_screen_trigger
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	screen_size = get_viewport().get_visible_rect().size
+	
 	var planks_arr = [Vector3(-1, 0, -1), Vector3(0, 0, -1), Vector3(-2, 0, -1),
 	 Vector3(1, 0, -1), Vector3(-3, 0, -1), Vector3(2, 0, -1), 
 	Vector3(-4, 0, -1)]
@@ -49,5 +54,15 @@ func _on_gull_check_position(final_position: Vector3, is_forward: bool) -> void:
 	if check_tile_val == 0 and is_forward:
 		increase_score.emit()
 	if check_tile_val==1:
-		get_tree().reload_current_scene()
+		var tween = create_tween()
+		tween.tween_property(kill_screen,"position",Vector2(kill_screen.position.x, (screen_size.y/2)-(kill_screen.size.y/2)),0.25)
+		tween.play()
 	pass # Replace with function body.
+
+
+func _on_retry_button_button_down() -> void:
+	get_tree().reload_current_scene()
+
+
+func _on_quit_button_button_down() -> void:
+	get_tree().quit()
