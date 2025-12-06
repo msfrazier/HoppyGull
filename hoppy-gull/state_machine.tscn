@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://bv137l18xut6"]
+
+[ext_resource type="Script" uid="uid://bsfto8pa5w65m" path="res://state_machine.gd" id="1_35xbh"]
+[ext_resource type="Script" uid="uid://sgj0y5y2pg5q" path="res://kill.gd" id="1_yf3jm"]
+[ext_resource type="Script" uid="uid://f0tigpot5y3u" path="res://moving.gd" id="3_wbto3"]
+
+[sub_resource type="GDScript" id="GDScript_35xbh"]
+script/source = "extends Node
+
+var fsm: StateMachine
+
+func enter():
+	print(\"Alive!\")
+
+
+func exit(next_state):
+	fsm.change_to(next_state)
+
+
+func _unhandled_key_input(event):
+	if event.as_text() in [\"W\",\"A\",\"D\",\"Up\",\"Left\",\"Right\"]:
+		fsm.change_to('moving')
+	pass
+"
+
+[node name="state_machine" type="Node"]
+script = ExtResource("1_35xbh")
+
+[node name="alive" type="Node" parent="."]
+script = SubResource("GDScript_35xbh")
+
+[node name="kill" type="Node" parent="."]
+script = ExtResource("1_yf3jm")
+
+[node name="moving" type="Node" parent="."]
+script = ExtResource("3_wbto3")

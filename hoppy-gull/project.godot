@@ -15,6 +15,10 @@ run/main_scene="uid://byovfrpxavwkx"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[global_group]
+
+danger_tile=""
+
 [input]
 
 ui_left={

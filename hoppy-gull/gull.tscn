@@ -9,54 +9,46 @@ const SPEED = 3
 var final_position : Vector3
 var movement_dist : float
 
+@onready var state_machine: StateMachine
+
 signal create_plank
 signal check_position
 
 func _ready() -> void:
 	final_position = position
 	movement_dist = $CollisionShape3D.shape.radius * 2
+	state_machine = $\"../state_machine\"
 	
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	#if not is_on_floor():
 		#velocity += get_gravity() * delta
 
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	#if Input.is_action_just_pressed(\"ui_left\") || \\
-	#Input.is_action_just_pressed(\"ui_right\") || \\
-	#Input.is_action_just_pressed(\"ui_up\"):
-		#var input_dir := Input.get_vector(\"ui_left\", \"ui_right\", \"ui_up\", \"ui_down\")
-			#
-		#var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-		#if direction:
-			#velocity.x = direction.x * SPEED
-			#velocity.z = direction.z * SPEED
-		#else:
-			#velocity.x = move_toward(velocity.x, 0, SPEED)
-			#velocity.z = move_toward(velocity.z, 0, SPEED)
-			
-	
 	if (final_position-position).length() >= 1e-2:
 		move_and_slide()
 	else:
 		velocity = Vector3.ZERO
+	if velocity == Vector3.ZERO and state_machine.current_state.name == 'moving':
+		state_machine.set_state(\"alive\")
 	pass
 		
 func _input(event: InputEvent) -> void:
-	if event.is_action(\"ui_left\") and velocity.is_zero_approx():
+	if event.is_action(\"ui_left\") and velocity.is_zero_approx() \\
+	and state_machine.current_state.name == \"alive\":
 		final_position = (position + Vector3(movement_dist,0,0)).snappedf(0.1)
 		var direction := (transform.basis * Vector3(1,0,0)).normalized()
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
 		check_position.emit(final_position, false)
-	elif event.is_action(\"ui_right\") and velocity.is_zero_approx():
+	elif event.is_action(\"ui_right\") and velocity.is_zero_approx()\\
+	and state_machine.current_state.name == \"alive\":
 		final_position = (position + Vector3(-movement_dist,0,0)).snappedf(0.1)
 		var direction := (transform.basis * Vector3(-1,0,0)).normalized()
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
 		check_position.emit(final_position, false)
-	elif event.is_action(\"ui_up\") and velocity.is_zero_approx():
+	elif event.is_action(\"ui_up\") and velocity.is_zero_approx()\\
+	and state_machine.current_state.name == \"alive\":
 		final_position = (position + Vector3(0,0,movement_dist)).snappedf(0.1)
 		var direction := (transform.basis * Vector3(0,0,1)).normalized()
 		velocity.x = direction.x * SPEED

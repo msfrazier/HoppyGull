@@ -1,10 +1,31 @@
-[gd_scene load_steps=10 format=3 uid="uid://byovfrpxavwkx"]
+[gd_scene load_steps=15 format=3 uid="uid://byovfrpxavwkx"]
 
 [ext_resource type="PackedScene" uid="uid://ce6on0dc1jgp1" path="res://gull.tscn" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://ck58xg1mvjsfn" path="res://main.gd" id="1_lquwl"]
 [ext_resource type="PackedScene" uid="uid://4usr2rytpd3u" path="res://dock.tscn" id="2_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://bv137l18xut6" path="res://state_machine.tscn" id="2_7mycd"]
 [ext_resource type="PackedScene" uid="uid://d2ml1r6tf8bth" path="res://dock_2.tscn" id="3_h2yge"]
 [ext_resource type="PackedScene" uid="uid://b784ohtqpqrfl" path="res://grid_map.tscn" id="4_1bvp3"]
+[ext_resource type="Shader" uid="uid://cmiwc5hkyq4th" path="res://ocean_2.gdshader" id="4_kek77"]
+[ext_resource type="Script" uid="uid://b0vwr4x5mjnox" path="res://grid_map.gd" id="7_5vw27"]
+[ext_resource type="Script" uid="uid://crktnqdxppbti" path="res://kill_screen.gd" id="7_272bh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kek77"]
+render_priority = 0
+shader = ExtResource("4_kek77")
+shader_parameter/WATER_COL = Color(0.039215688, 0.42745098, 0.5372549, 1)
+shader_parameter/WATER2_COL = Color(0.039215688, 0.41960785, 0.78039217, 1)
+shader_parameter/FOAM_COL = Color(0.8125, 0.9609, 0.9648, 1)
+shader_parameter/distortion_speed = 2.52
+shader_parameter/tile = Vector2(128, 128)
+shader_parameter/height = 2.0
+shader_parameter/wave_size = Vector2(12, 12)
+shader_parameter/wave_speed = 3.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_4c57u"]
+material = SubResource("ShaderMaterial_kek77")
+size = Vector2(128, 128)
+subdivide_width = 128
 
 [sub_resource type="GDScript" id="GDScript_lquwl"]
 script/source = "extends Label
@@ -37,30 +58,22 @@ gradient = SubResource("Gradient_lquwl")
 fill_from = Vector2(1, 0)
 fill_to = Vector2(1, 1)
 
-[sub_resource type="GDScript" id="GDScript_7mycd"]
-script/source = "extends TextureRect
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-"
-
 [node name="main" type="Node3D"]
 script = ExtResource("1_lquwl")
+
+[node name="state_machine" parent="." instance=ExtResource("2_7mycd")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.44285223, 0.89659464, 0, -0.89659464, -0.44285223, 0, 17.120935, -7.9684277)
 
 [node name="gull" parent="." instance=ExtResource("1_ig7tw")]
 
 [node name="camera" type="Camera3D" parent="gull"]
 transform = Transform3D(-1, -4.7731515e-08, 7.3242354e-08, 0, 0.83779496, 0.5459849, -8.742277e-08, 0.5459849, -0.83779496, 0, 1.6605778, -1.2919896)
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.44285223, 0.89659464, 0, -0.89659464, -0.44285223, 0, 17.120935, -7.9684277)
+[node name="ocean" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.796, 0)
+mesh = SubResource("PlaneMesh_4c57u")
 
 [node name="dock" parent="." instance=ExtResource("2_0xm2m")]
 visible = false
@@ -70,8 +83,9 @@ visible = false
 
 [node name="GridMap" parent="." instance=ExtResource("4_1bvp3")]
 data = {
-"cells": PackedInt32Array()
+"cells": PackedInt32Array(65535, 65535, 0)
 }
+script = ExtResource("7_5vw27")
 
 [node name="score_control" type="Control" parent="."]
 layout_mode = 3
@@ -101,7 +115,7 @@ offset_bottom = 708.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_7mycd")
-script = SubResource("GDScript_7mycd")
+script = ExtResource("7_272bh")
 
 [node name="retry_button" type="Button" parent="score_control/kill_screen"]
 layout_mode = 1
@@ -134,7 +148,9 @@ grow_vertical = 2
 text = "Quit
 "
 
+[connection signal="create_plank" from="." to="GridMap" method="_on_main_create_plank"]
 [connection signal="increase_score" from="." to="score_control/score_label" method="_on_main_increase_score"]
+[connection signal="kill_screen_trigger" from="." to="score_control/kill_screen" method="_on_main_kill_screen_trigger"]
 [connection signal="check_position" from="gull" to="." method="_on_gull_check_position"]
 [connection signal="create_plank" from="gull" to="." method="_on_gull_create_plank"]
 [connection signal="button_down" from="score_control/kill_screen/retry_button" to="." method="_on_retry_button_button_down"]
