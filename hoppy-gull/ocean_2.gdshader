@@ -7,7 +7,11 @@ uniform float distortion_speed = 2.0;
 uniform vec2 tile = vec2(5.0, 5.0);
 uniform float height = 2.0;
 uniform vec2 wave_size = vec2(2.0, 2.0);
+uniform vec2 water_speed = vec2(0.0, 0.015);
 uniform float wave_speed = 1.5;
+uniform float distortion = 0.2;
+uniform int cell_amount = 20;
+uniform vec2 period = vec2(5., 10.);
 
 const float M_2PI = 6.283185307;
 const float M_6PI = 18.84955592;
@@ -35,18 +39,71 @@ float noise(vec2 uv) {
             (d - b) * blur.x * blur.y;
 }
 
+vec2 random2(vec2 uv){
+    uv = vec2( dot(uv, vec2(127.1,311.7) ),
+               dot(uv, vec2(269.5,183.3) ) );
+    return -1.0 + 2.0 * fract(sin(uv) * 43758.5453123);
+}
+
+float perlin_noise(vec2 uv) {
+    vec2 uv_index = floor(uv);
+    vec2 uv_fract = fract(uv);
+
+    vec2 blur = smoothstep(0.0, 1.0, uv_fract);
+
+    return mix( mix( dot( random2(uv_index + vec2(0.0,0.0) ), uv_fract - vec2(0.0,0.0) ),
+                     dot( random2(uv_index + vec2(1.0,0.0) ), uv_fract - vec2(1.0,0.0) ), blur.x),
+                mix( dot( random2(uv_index + vec2(0.0,1.0) ), uv_fract - vec2(0.0,1.0) ),
+                     dot( random2(uv_index + vec2(1.0,1.0) ), uv_fract - vec2(1.0,1.0) ), blur.x), blur.y) + 0.5;
+}
+
 float fbm(vec2 uv) {
     int octaves = 6;
     float amplitude = 0.5;
-    float frequency = 3.0;
-	float value = 0.0;
+    float frequency = 16.0;
+	float value = 16.0;
 	
     for(int i = 0; i < octaves; i++) {
-        value += amplitude * noise(frequency * uv);
+        value += amplitude * perlin_noise(frequency * uv);
         amplitude *= 0.5;
         frequency *= 2.0;
     }
     return value;
+}
+
+vec2 modulo(vec2 divident, vec2 divisor){
+	vec2 positiveDivident = mod(divident, divisor) + divisor;
+	return mod(positiveDivident, divisor);
+}
+
+vec2 random3(vec2 value){
+	value = vec2( dot(value, vec2(127.1,311.7) ),
+				  dot(value, vec2(269.5,183.3) ) );
+	return -1.0 + 2.0 * fract(sin(value) * 43758.5453123);
+}
+
+float seamless_noise(vec2 uv, vec2 _period) {
+	uv = uv * float(cell_amount);
+	vec2 cellsMinimum = floor(uv);
+	vec2 cellsMaximum = ceil(uv);
+	vec2 uv_fract = fract(uv);
+	
+	cellsMinimum = modulo(cellsMinimum, _period);
+	cellsMaximum = modulo(cellsMaximum, _period);
+	
+	vec2 blur = smoothstep(0.0, 1.0, uv_fract);
+	
+	vec2 lowerLeftDirection = random3(vec2(cellsMinimum.x, cellsMinimum.y));
+	vec2 lowerRightDirection = random3(vec2(cellsMaximum.x, cellsMinimum.y));
+	vec2 upperLeftDirection = random3(vec2(cellsMinimum.x, cellsMaximum.y));
+	vec2 upperRightDirection = random3(vec2(cellsMaximum.x, cellsMaximum.y));
+	
+	vec2 fraction = fract(uv);
+	
+	return mix( mix( dot( lowerLeftDirection, fraction - vec2(0, 0) ),
+                     dot( lowerRightDirection, fraction - vec2(1, 0) ), blur.x),
+                mix( dot( upperLeftDirection, fraction - vec2(0, 1) ),
+                     dot( upperRightDirection, fraction - vec2(1, 1) ), blur.x), blur.y) * 0.8 + 0.5;
 }
 
 float circ(vec2 pos, vec2 c, float s)
@@ -145,7 +202,7 @@ float waterlayer(vec2 uv)
 vec3 water(vec2 uv, vec3 cdir, float iTime)
 {
     uv *= vec2(0.25);
-	uv += fbm(uv) * 0.2;
+	uv += seamless_noise(uv,period) * distortion;
 
     // Parallax height distortion with two directional waves at
     // slightly different angles.
@@ -187,7 +244,6 @@ void vertex(){
 
 void fragment()
 {
-	vec2 uv = UV;
-	
+	vec2 uv = UV+(TIME * water_speed);
     ALBEDO = vec3(water(uv * tile, vec3(0,1,0), TIME * distortion_speed));
 }

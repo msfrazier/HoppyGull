@@ -13,19 +13,25 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kek77"]
 render_priority = 0
 shader = ExtResource("4_kek77")
-shader_parameter/WATER_COL = Color(0.039215688, 0.42745098, 0.5372549, 1)
-shader_parameter/WATER2_COL = Color(0.039215688, 0.41960785, 0.78039217, 1)
+shader_parameter/WATER_COL = Color(0.039215688, 0.52156866, 0.8784314, 1)
+shader_parameter/WATER2_COL = Color(0.04, 0.35, 0.78, 1)
 shader_parameter/FOAM_COL = Color(0.8125, 0.9609, 0.9648, 1)
-shader_parameter/distortion_speed = 2.52
-shader_parameter/tile = Vector2(128, 128)
+shader_parameter/distortion_speed = 2.0
+shader_parameter/tile = Vector2(64, 64)
 shader_parameter/height = 2.0
-shader_parameter/wave_size = Vector2(12, 12)
-shader_parameter/wave_speed = 3.0
+shader_parameter/wave_size = Vector2(16, 32)
+shader_parameter/water_speed = Vector2(0, 0.015)
+shader_parameter/wave_speed = 1.5
+shader_parameter/distortion = 0.2
+shader_parameter/cell_amount = 8
+shader_parameter/period = Vector2(5, 10)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_4c57u"]
+lightmap_size_hint = Vector2i(642, 642)
 material = SubResource("ShaderMaterial_kek77")
 size = Vector2(128, 128)
-subdivide_width = 128
+subdivide_width = 100
+subdivide_depth = 100
 
 [sub_resource type="GDScript" id="GDScript_lquwl"]
 script/source = "extends Label
@@ -72,7 +78,7 @@ transform = Transform3D(1, 0, 0, 0, -0.44285223, 0.89659464, 0, -0.89659464, -0.
 transform = Transform3D(-1, -4.7731515e-08, 7.3242354e-08, 0, 0.83779496, 0.5459849, -8.742277e-08, 0.5459849, -0.83779496, 0, 1.6605778, -1.2919896)
 
 [node name="ocean" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.796, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05934453, -4.788082, -0.007501006)
 mesh = SubResource("PlaneMesh_4c57u")
 
 [node name="dock" parent="." instance=ExtResource("2_0xm2m")]
@@ -152,7 +158,6 @@ text = "Quit
 [connection signal="increase_score" from="." to="score_control/score_label" method="_on_main_increase_score"]
 [connection signal="kill_screen_trigger" from="." to="score_control/kill_screen" method="_on_main_kill_screen_trigger"]
 [connection signal="check_position" from="gull" to="." method="_on_gull_check_position"]
-[connection signal="create_plank" from="gull" to="." method="_on_gull_create_plank"]
 [connection signal="button_down" from="score_control/kill_screen/retry_button" to="." method="_on_retry_button_button_down"]
 [connection signal="button_down" from="score_control/kill_screen/quit_button" to="." method="_on_quit_button_button_down"]
 

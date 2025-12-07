@@ -27,14 +27,21 @@ func _process(delta: float) -> void:
 
 func _on_main_create_plank() -> void:
 	
-	for tile in dock[0]:
-		self.set_cell_item(tile,-1)
-	dock.pop_front()
-	
+	for plank in dock:
+		for tile in plank:
+			print(tile)
+			#if tile.z == -3:
+				#self.set_cell_item(tile,-1)
+			#else:
+				##print(self.get_cell_item(Vector3(tile.x,tile.y,tile.z+1)))
+			self.set_cell_item(tile,self.get_cell_item(Vector3(tile.x,0,tile.z+1)))
+				
+	dock.pop_back()	
+				
 	var new_plank = Array()
-	for x in dock[-1]:
+	for tile in dock[-1]:
 		var random_board = randf()
-		var new_board = Vector3(x.x,x.y,x.z+1)
+		var new_board = Vector3(tile.x,tile.y,tile.z+1)
 		if random_board<=0.85:
 			self.set_cell_item(new_board,self.mesh_library.find_item_by_name("rounded_plank"))
 		else:
@@ -44,6 +51,15 @@ func _on_main_create_plank() -> void:
 				self.set_cell_item(new_board,self.mesh_library.find_item_by_name("empty_plank"))
 		new_plank.push_back(new_board)
 	dock.push_back(new_plank)
-	print(len(dock))
+			
 	
+	
+	
+	#for tile in self.get_used_cells():
+		#print(tile.z)
+		#tile.z = tile.z - 1
+	
+	
+	
+
 	pass # Replace with function body.

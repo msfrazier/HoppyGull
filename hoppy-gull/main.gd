@@ -37,40 +37,15 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-
-func _on_gull_create_plank() -> void:
-	#for tile in dock[0]:
-		#gridMap.set_cell_item(tile,-1)
-	#dock.pop_front()
-	
-	create_plank.emit()
-	
-	#var new_plank = Array()
-	#for x in dock[-1]:
-		#var random_board = randf()
-		#var new_board = Vector3(x.x,x.y,x.z+1)
-		#if random_board<=0.85:
-			#gridMap.set_cell_item(new_board,0)
-		#else:
-			#gridMap.set_cell_item(new_board,1)
-		#new_plank.push_back(new_board)
-	#dock.push_back(new_plank)
-	#print(len(dock))
-	pass # Replace with function body.
-
-
-func _on_gull_check_position(final_position: Vector3, is_forward: bool) -> void:
+func _on_gull_check_position(final_position: Vector3, is_forward: bool):
 	var check_tile_mesh_name:String = gridMap.mesh_library.get_item_name(gridMap.get_cell_item(gridMap.local_to_map(gridMap.to_local(final_position))))
 	if check_tile_mesh_name == "empty_plank":
 		kill_screen_trigger.emit(screen_size)
 		state_machine.set_state('kill')
 	elif is_forward:
-		increase_score.emit()
-	#if check_tile_val == 0 and is_forward:
-		#increase_score.emit()
-	#if check_tile_val==1:
-		#kill_screen_trigger.emit(screen_size)
-		#state_machine.set_state('kill')
+		if check_tile_mesh_name != "fisherman_plank":
+			create_plank.emit()
+			increase_score.emit()
 	pass # Replace with function body.
 
 

@@ -79,7 +79,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_7kl82")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vnitd"]
-size = Vector3(0.79663086, 1, 0.80566406)
+size = Vector3(0.7786865, 1, 0.7841797)
 
 [node name="meshLibrarySource" type="Node3D"]
 
@@ -122,7 +122,7 @@ shape = SubResource("ConvexPolygonShape3D_xdm1l")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="rounded_plank2/fisherman_plank/fisherman_static"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0095825195, 0.5, 0.0078125)
 shape = SubResource("BoxShape3D_vnitd")
 
 [node name="hook_timer" type="Timer" parent="rounded_plank2/fisherman_plank"]

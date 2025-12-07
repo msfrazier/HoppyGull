@@ -101,7 +101,7 @@ data = {
 image = SubResource("Image_lxoiy")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vnitd"]
-size = Vector3(0.79663086, 1, 0.80566406)
+size = Vector3(0.7786865, 1, 0.7841797)
 
 [resource]
 item/0/name = "empty_plank"
@@ -123,7 +123,7 @@ item/2/name = "fisherman_plank"
 item/2/mesh = SubResource("ArrayMesh_culq2")
 item/2/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 item/2/mesh_cast_shadow = 1
-item/2/shapes = [SubResource("ConvexPolygonShape3D_xdm1l"), Transform3D(0.4, 0, 0, 0, 0.1, 0, 0, 0, 0.4, 0, -0.07, 0), SubResource("BoxShape3D_vnitd"), Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)]
+item/2/shapes = [SubResource("ConvexPolygonShape3D_xdm1l"), Transform3D(0.4, 0, 0, 0, 0.1, 0, 0, 0, 0.4, 0, -0.07, 0), SubResource("BoxShape3D_vnitd"), Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0095825195, 0.5, 0.0078125)]
 item/2/navigation_mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 item/2/navigation_layers = 1
 item/2/preview = SubResource("ImageTexture_xnov8")
