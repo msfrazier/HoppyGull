@@ -1,0 +1,58 @@
+[gd_resource type="VisualShader" load_steps=11 format=3 uid="uid://da2d2kmavo3ov"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_04thm"]
+expanded_output_ports = [0]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_42npf"]
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_04thm"]
+constant = Color(1, 1, 1, 0.07058824)
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_42npf"]
+constant = Color(1, 1, 1, 0.24313726)
+
+[sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_f52fd"]
+constant = 4.4
+
+[sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_w8w3n"]
+constant = 8.454
+
+[sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_04thm"]
+constant = 4.6
+
+[sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_42npf"]
+constant = 0.03
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_04thm"]
+function = 17
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_42npf"]
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, depth_test_default, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+
+"
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_04thm")
+nodes/fragment/2/position = Vector2(-940, 120)
+nodes/fragment/3/node = SubResource("VisualShaderNodeColorConstant_42npf")
+nodes/fragment/3/position = Vector2(-940, 220)
+nodes/fragment/4/node = SubResource("VisualShaderNodeFloatConstant_f52fd")
+nodes/fragment/4/position = Vector2(-940, 320)
+nodes/fragment/5/node = SubResource("VisualShaderNodeFloatConstant_w8w3n")
+nodes/fragment/5/position = Vector2(-940, 420)
+nodes/fragment/6/node = SubResource("VisualShaderNodeFloatConstant_04thm")
+nodes/fragment/6/position = Vector2(-940, 520)
+nodes/fragment/7/node = SubResource("VisualShaderNodeFloatConstant_42npf")
+nodes/fragment/7/position = Vector2(-940, 620)
+nodes/fragment/8/node = SubResource("VisualShaderNodeFloatFunc_04thm")
+nodes/fragment/8/position = Vector2(-200, 0)
+nodes/fragment/9/node = SubResource("VisualShaderNodeDotProduct_42npf")
+nodes/fragment/9/position = Vector2(-580, -40)
+nodes/fragment/10/node = SubResource("VisualShaderNodeInput_04thm")
+nodes/fragment/10/position = Vector2(-940, 740)
+nodes/fragment/11/node = SubResource("VisualShaderNodeFloatFunc_42npf")
+nodes/fragment/11/position = Vector2(-460, 460)

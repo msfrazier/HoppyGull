@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://d2ml1r6tf8bth"]
+[gd_scene load_steps=2 format=3 uid="uid://d2ml1r6tf8bth"]
 
 [sub_resource type="GDScript" id="GDScript_ux8ul"]
 script/source = "extends AnimatableBody3D
@@ -6,33 +6,12 @@ script/source = "extends AnimatableBody3D
 @onready var plank_mesh := $plank_col/plank_mesh
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	plank_mesh.mesh.material.albedo_color = Color(randf(),randf(),randf())
+	var rounded_plank_tile = load(\"res://rounded_plank_tile.tscn\")
 	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func build_plank():
 	pass
 "
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ux8ul"]
-size = Vector3(0.4, 0.1, 0.4)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1kr1d"]
-albedo_color = Color(0.91145927, 0, 0.062447056, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_rrdhh"]
-material = SubResource("StandardMaterial3D_1kr1d")
-size = Vector3(0.4, 0.1, 0.4)
-
 [node name="dock_2" type="AnimatableBody3D"]
 script = SubResource("GDScript_ux8ul")
-
-[node name="plank_col" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.050072506, 0)
-shape = SubResource("BoxShape3D_ux8ul")
-
-[node name="plank_mesh" type="MeshInstance3D" parent="plank_col"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.2505325e-05, 0)
-mesh = SubResource("BoxMesh_rrdhh")
-skeleton = NodePath("../..")

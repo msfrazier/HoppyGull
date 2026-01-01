@@ -109,6 +109,7 @@ shape = SubResource("ConvexPolygonShape3D_xdm1l")
 
 [node name="fisherman_plank" type="MeshInstance3D" parent="rounded_plank2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+visible = false
 mesh = SubResource("ArrayMesh_sahhb")
 skeleton = NodePath("")
 

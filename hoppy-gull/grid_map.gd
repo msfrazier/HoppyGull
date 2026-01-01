@@ -29,11 +29,6 @@ func _on_main_create_plank() -> void:
 	
 	for plank in dock:
 		for tile in plank:
-			print(tile)
-			#if tile.z == -3:
-				#self.set_cell_item(tile,-1)
-			#else:
-				##print(self.get_cell_item(Vector3(tile.x,tile.y,tile.z+1)))
 			self.set_cell_item(tile,self.get_cell_item(Vector3(tile.x,0,tile.z+1)))
 				
 	dock.pop_back()	
