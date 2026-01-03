@@ -1,70 +1,45 @@
-[gd_scene load_steps=8 format=4 uid="uid://dmr68etageyf"]
+[gd_scene load_steps=5 format=4 uid="uid://dmr68etageyf"]
 
-[ext_resource type="Shader" uid="uid://drgsct600d5xv" path="res://wood_texture.gdshader" id="1_3tj68"]
 [ext_resource type="Texture2D" uid="uid://dw4yxkeoa84d6" path="res://mesh/rounded_plank_tile_gr-1.png" id="2_urm3k"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3tj68"]
-render_priority = 0
-shader = ExtResource("1_3tj68")
-shader_parameter/light_color = Color(1, 1, 1, 0.0627451)
-shader_parameter/dark_color = Color(0, 0, 0, 0.24313726)
-shader_parameter/ring_scale = 4.4
-shader_parameter/wave_scale = 8.454
-shader_parameter/random_scale = 4.6
-shader_parameter/noise_scale = 0.03
-shader_parameter/world_offset = Vector3(0, 0, 0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cnvh8"]
 resource_name = "Material.001"
 cull_mode = 2
 albedo_texture = ExtResource("2_urm3k")
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_mtdcj"]
-_surfaces = [{
-"aabb": AABB(-1, 0.6820279, -1, 2, 0.31797212, 2),
-"format": 34896613377,
-"index_count": 54,
-"index_data": PackedByteArray("AAABAAIAAAADAAEAAgAEAAAAAwAFAAEAAgAGAAQAAwAHAAUABgAIAAQABwAJAAUABgAKAAgABwALAAkACgAMAAgACwANAAkACgAOAAwADgAPAAwADgAQAA8ACwARAA0AEQASAA0AEQATABIA"),
-"name": "Material.001",
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 20,
-"vertex_data": PackedByteArray("/////7MoAAAAAP//S9cAAAAA//+zKAAA/////0vXAAD//4LsHxkAAAAAguzf5gAAAACC7B8ZAAD//4Ls3+YAAP//BLXrCwAAAAAEtRP0AAAAAAS16wsAAP//BLUT9AAA///3YRkDAAAAAPdh5fwAAAAA92EZAwAA//8AAAAAAAAAAAAAAAAAAP//92Hl/AAAAAAAAP//AAD//wAA//8AAA==")
-}]
-blend_shape_mode = 0
+texture_filter = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_f15t7"]
 resource_name = "rounded_plank_tile_Cube_001"
 _surfaces = [{
 "aabb": AABB(-1, 0.6820279, -1, 2, 0.31797212, 2),
-"attribute_data": PackedByteArray("KEKloshdhw7IXaWiKELcr8hd3K8oQocOyF1RAShCUQHIXXzVKEKw4ChCfNXIXbDgKELm7chd5u0oQh37yF0d+8hd3K8oQg+7KELcr8hdD7soQkbIyF1GyChCfNXIXXzV"),
-"format": 34896613399,
+"attribute_data": PackedByteArray("HdmPPvK7OD8vyK4+oGeHPi/Irj7yuzg/HdmPPqBnhz4d2Y8+kixDPy/Irj6oDGU+L8iuPpIsQz8d2Y8+qAxlPh3Zjz5SBkw/L8iuPpilQT4vyK4+VgZMPx3Zjz6YpUE+HdmPPvZ2Vj8vyK4+DOMXPi/Irj75dlY/HdmPPprnYD8vyK4+mudgPx3Zjz4M4xc+L8iuPvhA3D0d2Y8++EDcPQ=="),
+"format": 34359742487,
 "index_count": 54,
-"index_data": PackedByteArray("AAABAAIAAgADAAAAAgAEAAMAAAAFAAEABQAGAAEABQAHAAYACAAJAAoACAALAAkACwAMAAkACwANAAwADQAOAAwADQAPAA4AEAARABIAEAATABEAEwAUABEAEwAVABQAFQAWABQAFQAXABYA"),
+"index_data": PackedByteArray("AAABAAIAAAADAAEAAgAEAAAAAwAFAAEAAgAGAAQAAwAHAAUABgAIAAQABwAJAAUABgAKAAgABwALAAkACgAMAAgACwANAAkACgAOAAwADgAPAAwADgAQAA8ACwARAA0AEQASAA0AEQATABIA"),
 "material": SubResource("StandardMaterial3D_cnvh8"),
 "name": "Material.001",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 24,
-"vertex_data": PackedByteArray("/////7Mo//8AAP//S9f//wAA//+zKP////+C7B8Z//8AAILsHxn///////9L1///AACC7N/m/////4Ls3+b//wAAguwfGf////8EtesL/////4LsHxn//wAABLXrC//////3YRkD//8AAPdhGQP/////AAAAAP//AAAAAAAA/////4Ls3+b/rwAABLUT9P+fAACC7N/m/6///wS1E/T/nwAA92Hl/P+P///3YeX8/48AAAAA////h///AAD///+H/38jw/9/2rz/fyPD/3+6zP9/usz/f9q8/39Es/9/RLP/f7rM/3+B2v9/usz/f4Ha/3/C6v9/wur/f4T0/3+E9P///3////9/////f////3////9/////f////3////9/")
+"vertex_count": 20,
+"vertex_data": PackedByteArray("AACAPwAAgD9hmS6/AACAvwAAgD9hmS4/AACAvwAAgD9hmS6/AACAPwAAgD9hmS4/AACAP8DNeT/4v02/AACAv8DNeT/4v00/AACAv8DNeT/4v02/AACAP8DNeT/4v00/AACAP4EoaD+BKGi/AACAv4EoaD+BKGg/AACAv4EoaD+BKGi/AACAP4EoaD+BKGg/AACAP/i/TT/AzXm/AACAv/i/TT/AzXk/AACAv/i/TT/AzXm/AACAP2GZLj8AAIC/AACAv2GZLj8AAIC/AACAP/i/TT/AzXk/AACAv2GZLj8AAIA/AACAP2GZLj8AAIA/eIv//wAA/7//f4X0AAD/v3iL//8AAP+//3+F9AAA/799pf//AAD/v/9/gdoAAP+/faX//wAA/7//f4HaAAD/v/+///8AAP+//3//vwAA/7//v///AAD/v/9//78AAP+/gdr//wAA/7//f32lAAD/v4Ha//8AAP+/wur//wAA/7/C6v//AAD/v/9/faUAAP+//388lQAA/7//fzyVAAD/vw==")
 }]
 blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_mtdcj")
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_xmeit"]
 points = PackedVector3Array(1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1)
 
 [node name="rounded_plank_tile" type="Node3D"]
 
-[node name="rounded_plank" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.4, 0, 0, 0, 0.1, 0, 0, 0, 0.4, 0, -0.1, 0)
-material_overlay = SubResource("ShaderMaterial_3tj68")
+[node name="rounded_plank_tile" type="Node3D" parent="."]
+
+[node name="rounded_plank" type="MeshInstance3D" parent="rounded_plank_tile"]
+transform = Transform3D(0.4, 0, 0, 0, 0.1, 0, 0, 0, 0.4, 0, 0, 0)
 mesh = SubResource("ArrayMesh_f15t7")
 skeleton = NodePath("")
 
-[node name="rounded_plank_static" type="StaticBody3D" parent="rounded_plank"]
-transform = Transform3D(2.5, 0, 0, 0, 10, 0, 0, 0, 2.5, 0, 0, 0)
+[node name="rounded_plank_static" type="StaticBody3D" parent="rounded_plank_tile"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.03130264, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="rounded_plank/rounded_plank_static"]
-transform = Transform3D(0.4, 0, 0, 0, 0.1, 0, 0, 0, 0.4, 0, 0.03, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="rounded_plank_tile/rounded_plank_static"]
+transform = Transform3D(0.4, 0, 0, 0, 0.1, 0, 0, 0, 0.4, 0, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_xmeit")

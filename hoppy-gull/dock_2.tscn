@@ -3,10 +3,16 @@
 [sub_resource type="GDScript" id="GDScript_ux8ul"]
 script/source = "extends AnimatableBody3D
 
-@onready var plank_mesh := $plank_col/plank_mesh
+@onready var plank = preload(\"res://plank_object.tscn\")
+@onready var tile_width  = 0.4
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var rounded_plank_tile = load(\"res://rounded_plank_tile.tscn\")
+	var planks_arr_z = range(-3,55)
+	for i in planks_arr_z:
+		var plank_inst = plank.instantiate()
+		plank_inst.tile_arr = [1,1,1,1,1,1,1]
+		plank_inst.position.z = i * tile_width
+		add_child(plank_inst)
 	pass # Replace with function body.
 
 func build_plank():

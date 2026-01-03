@@ -15,12 +15,12 @@ uniform float wave_scale = 8.454;
 uniform float random_scale = 4.6;
 uniform float noise_scale = 0.03;
 
-uniform vec3 world_offset = vec3(0.0);
+uniform vec3 world_offset = vec3(1.0);
 
 varying vec3 world_pos;
 
 vec2 random( vec2 pos )
-{ 
+{
 	return fract(
 		sin(
 			vec2(
@@ -47,19 +47,19 @@ float value_noise( vec2 pos )
 }
 
 void vertex() {
-    world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+    world_pos = (MODEL_MATRIX * vec4(VERTEX,1.0)).xyz;
 }
 
 void fragment( )
 {
 	//vec2 shift_uv = UV;
-	vec2 shift_uv = (world_pos - world_offset).yz;
-	vec2 p = shift_uv * 1.0;
-	
+	vec2 shift_uv = (world_pos - world_offset).xz;
+	vec2 p = shift_uv * world_pos.xz;
+
 	shift_uv.x += value_noise( p * random_scale );
-	float x = shift_uv.x + sin( shift_uv.y * wave_scale );
+	float x = shift_uv.x + sin( p.y * wave_scale );
 	float f = mod( x * ring_scale + random( p ).x * noise_scale, 1.0 );
-	
+
 	ALBEDO = mix( light_color, dark_color, f ).rgb;
 	ALPHA = mix( light_color, dark_color, f ).a;
 }
