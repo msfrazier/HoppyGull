@@ -3,6 +3,7 @@ extends Node3D
 @onready var gridMap := $GridMap
 @onready var gull := $gull
 @onready var kill_screen := $score_control/kill_screen
+@onready var dock := $dock_2
 
 @onready var screen_size: Vector2
 @onready var state_machine: StateMachine
@@ -38,14 +39,18 @@ func _process(delta: float) -> void:
 	pass
 
 func _on_gull_check_position(final_position: Vector3, is_forward: bool):
-	var check_tile_mesh_name:String = gridMap.mesh_library.get_item_name(gridMap.get_cell_item(gridMap.local_to_map(gridMap.to_local(final_position))))
-	if check_tile_mesh_name == "empty_plank":
+	var check_tile
+	if !is_forward:
+		check_tile = dock.current_plank[gull.current_position]
+	elif is_forward:
+		check_tile = dock.next_plank[gull.current_position]
+	if check_tile==0:
 		kill_screen_trigger.emit(screen_size)
 		state_machine.set_state('kill')
 	elif is_forward:
-		if check_tile_mesh_name != "fisherman_plank":
-			create_plank.emit()
-			increase_score.emit()
+		create_plank.emit()
+		increase_score.emit()
+	
 	pass # Replace with function body.
 
 

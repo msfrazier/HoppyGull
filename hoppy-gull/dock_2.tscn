@@ -3,20 +3,54 @@
 [sub_resource type="GDScript" id="GDScript_ux8ul"]
 script/source = "extends AnimatableBody3D
 
+var current_plank: Array
+var next_plank: Array
+
+@onready var plank_arr: Array
+@onready var first_plank_pos = -6
+@onready var last_plank_pos = 25
+
 @onready var plank = preload(\"res://plank_object.tscn\")
 @onready var tile_width  = 0.4
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var planks_arr_z = range(-3,55)
+	var planks_arr_z = range(first_plank_pos,last_plank_pos)
 	for i in planks_arr_z:
 		var plank_inst = plank.instantiate()
 		plank_inst.tile_arr = [1,1,1,1,1,1,1]
 		plank_inst.position.z = i * tile_width
 		add_child(plank_inst)
+		plank_arr.push_back(plank_inst)
+		if i==0:
+			current_plank = plank_inst.tile_arr
+		elif i==1:
+			next_plank  = plank_inst.tile_arr
 	pass # Replace with function body.
 
 func build_plank():
 	pass
+
+
+func _on_main_create_plank() -> void:
+	for i in plank_arr:
+		i.position.z -= tile_width
+	plank_arr[0].queue_free()
+	plank_arr.pop_front()
+	var new_plank = Array()
+	for plank_tile in range(7):
+		var random_board = randf()
+		if random_board<=0.85:
+			new_plank.append(1)
+		else:
+			new_plank.append(0)
+	var plank_inst = plank.instantiate()
+	plank_inst.tile_arr = new_plank
+	plank_inst.position.z = (last_plank_pos-1) * tile_width
+	add_child(plank_inst)
+	current_plank = plank_arr[6].tile_arr
+	next_plank = plank_arr[7].tile_arr
+	plank_arr.push_back(plank_inst)
 "
 
 [node name="dock_2" type="AnimatableBody3D"]

@@ -6,6 +6,7 @@ script/source = "extends CharacterBody3D
 
 const SPEED = 3
 
+@onready var current_position : int = 3
 var final_position : Vector3
 var movement_dist : float
 
@@ -20,9 +21,6 @@ func _ready() -> void:
 	state_machine = $\"../state_machine\"
 	
 func _physics_process(delta: float) -> void:
-	# Add the gravity.
-	#if not is_on_floor():
-		#velocity += get_gravity() * delta
 
 	if (final_position-position).length() >= 1e-2:
 		move_and_slide()
@@ -34,18 +32,22 @@ func _physics_process(delta: float) -> void:
 		
 func _input(event: InputEvent) -> void:
 	if event.is_action(\"ui_left\") and velocity.is_zero_approx() \\
-	and state_machine.current_state.name == \"alive\":
+	and state_machine.current_state.name == \"alive\"\\
+	and current_position > 0:
 		final_position = (position + Vector3(movement_dist,0,0)).snappedf(0.1)
 		var direction := (transform.basis * Vector3(1,0,0)).normalized()
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
+		current_position -= 1
 		check_position.emit(final_position, false)
 	elif event.is_action(\"ui_right\") and velocity.is_zero_approx()\\
-	and state_machine.current_state.name == \"alive\":
+	and state_machine.current_state.name == \"alive\"\\
+	and current_position < 6:
 		final_position = (position + Vector3(-movement_dist,0,0)).snappedf(0.1)
 		var direction := (transform.basis * Vector3(-1,0,0)).normalized()
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
+		current_position += 1
 		check_position.emit(final_position, false)
 	elif event.is_action_pressed(\"ui_up\") and velocity.is_zero_approx()\\
 	and state_machine.current_state.name == \"alive\":

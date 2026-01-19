@@ -35,34 +35,41 @@ script = SubResource("GDScript_3wd3n")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0, 0)
 
 [node name="rounded_plank_tile" parent="tile_1" instance=ExtResource("1_jxc1h")]
+visible = false
 
 [node name="tile_2" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0, 0)
 
 [node name="rounded_plank_tile" parent="tile_2" instance=ExtResource("1_jxc1h")]
+visible = false
 
 [node name="tile_3" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
 
 [node name="rounded_plank_tile" parent="tile_3" instance=ExtResource("1_jxc1h")]
+visible = false
 
 [node name="tile_4" type="Marker3D" parent="."]
 
 [node name="rounded_plank_tile" parent="tile_4" instance=ExtResource("1_jxc1h")]
+visible = false
 
 [node name="tile_5" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
 
 [node name="rounded_plank_tile" parent="tile_5" instance=ExtResource("1_jxc1h")]
+visible = false
 
 [node name="tile_6" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 0, 0)
 
 [node name="rounded_plank_tile" parent="tile_6" instance=ExtResource("1_jxc1h")]
+visible = false
 
 [node name="tile_7" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0, 0)
 
 [node name="rounded_plank_tile" parent="tile_7" instance=ExtResource("1_jxc1h")]
+visible = false
 
 [editable path="tile_3/rounded_plank_tile"]
