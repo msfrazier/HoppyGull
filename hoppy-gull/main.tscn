@@ -90,9 +90,14 @@ transform = Transform3D(-1, -4.7731522e-08, 7.324236e-08, 4.5598885e-08, 0.43002
 [node name="camera2" type="Camera3D" parent="gull"]
 transform = Transform3D(-1, -4.7731515e-08, 7.3242354e-08, 0, 0.83779496, 0.5459849, -8.742277e-08, 0.5459849, -0.83779496, 0, 6.922907, -7.0364733)
 
-[node name="ocean" type="MeshInstance3D" parent="."]
+[node name="camera3" type="Camera3D" parent="gull"]
+transform = Transform3D(-1, -4.7731515e-08, 7.3242354e-08, -1.646232e-08, 0.9256197, 0.37845474, -8.58588e-08, 0.37845474, -0.9256197, 0, 2.5875187, -1.8547182)
+current = true
+
+[node name="ocean" type="MeshInstance3D" parent="gull"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05934453, -4.788082, -0.007501006)
 mesh = SubResource("PlaneMesh_4c57u")
+skeleton = NodePath("../..")
 
 [node name="GridMap" parent="." instance=ExtResource("4_1bvp3")]
 visible = false

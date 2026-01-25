@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://b35ejp8eceebm"]
+
+[ext_resource type="PackedScene" uid="uid://07ww5bcows0h" path="res://mesh/railing.glb" id="1_l6vqv"]
+
+[node name="railing" instance=ExtResource("1_l6vqv")]

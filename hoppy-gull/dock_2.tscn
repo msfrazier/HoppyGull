@@ -11,15 +11,20 @@ var next_plank: Array
 @onready var last_plank_pos = 25
 
 @onready var plank = preload(\"res://plank_object.tscn\")
+@onready var railing = preload(\"res://railing.tscn\")
 @onready var tile_width  = 0.4
+@onready var add_railing = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var planks_arr_z = range(first_plank_pos,last_plank_pos)
+	var railing_inst = railing.instantiate()
 	for i in planks_arr_z:
 		var plank_inst = plank.instantiate()
 		plank_inst.tile_arr = [1,1,1,1,1,1,1]
 		plank_inst.position.z = i * tile_width
+		plank_inst.railing = add_railing
+		add_railing = !add_railing
 		add_child(plank_inst)
 		plank_arr.push_back(plank_inst)
 		if i==0:
@@ -33,8 +38,12 @@ func build_plank():
 
 
 func _on_main_create_plank() -> void:
-	for i in plank_arr:
-		i.position.z -= tile_width
+	
+	#for i in plank_arr:
+		#var tween = get_tree().create_tween()
+		#tween.tween_property(i,\"position\",
+		#Vector3(i.position.x,i.position.y,i.position.z-tile_width),01.333333333333)
+		##i.position.z -= tile_width
 	plank_arr[0].queue_free()
 	plank_arr.pop_front()
 	var new_plank = Array()
@@ -46,11 +55,15 @@ func _on_main_create_plank() -> void:
 			new_plank.append(0)
 	var plank_inst = plank.instantiate()
 	plank_inst.tile_arr = new_plank
-	plank_inst.position.z = (last_plank_pos-1) * tile_width
+	plank_inst.position.z = (last_plank_pos) * tile_width
+	plank_inst.railing = add_railing
+	add_railing = !add_railing
 	add_child(plank_inst)
 	current_plank = plank_arr[6].tile_arr
 	next_plank = plank_arr[7].tile_arr
+	last_plank_pos += 1
 	plank_arr.push_back(plank_inst)
+	
 "
 
 [node name="dock_2" type="AnimatableBody3D"]

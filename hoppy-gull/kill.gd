@@ -4,7 +4,7 @@ extends Node
 var fsm: StateMachine
 
 func enter():
-	print("Kill!")
+	pass
 
 
 func exit(next_state):

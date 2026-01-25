@@ -4,11 +4,12 @@
 script/source = "extends CharacterBody3D
 
 
-const SPEED = 3
+const SPEED = 4
 
 @onready var current_position : int = 3
 var final_position : Vector3
 var movement_dist : float
+var movement_time: float
 
 @onready var state_machine: StateMachine
 
@@ -19,14 +20,18 @@ func _ready() -> void:
 	final_position = position
 	movement_dist = $CollisionShape3D.shape.radius * 2
 	state_machine = $\"../state_machine\"
+	movement_time = 0.0
 	
 func _physics_process(delta: float) -> void:
 
 	if (final_position-position).length() >= 1e-2:
+		movement_time += delta
 		move_and_slide()
 	else:
 		velocity = Vector3.ZERO
 	if velocity == Vector3.ZERO and state_machine.current_state.name == 'moving':
+		print(movement_time)
+		movement_time = 0.0
 		state_machine.set_state(\"alive\")
 	pass
 		
@@ -49,12 +54,13 @@ func _input(event: InputEvent) -> void:
 		velocity.z = direction.z * SPEED
 		current_position += 1
 		check_position.emit(final_position, false)
-	elif event.is_action_pressed(\"ui_up\") and velocity.is_zero_approx()\\
+	elif (event.is_action_pressed(\"ui_up\") or event.is_action(\"ui_up\"))\\
+	 and velocity.is_zero_approx()\\
 	and state_machine.current_state.name == \"alive\":
 		final_position = (position + Vector3(0,0,movement_dist)).snappedf(0.1)
-		#var direction := (transform.basis * Vector3(0,0,1)).normalized()
-		#velocity.x = direction.x * SPEED
-		#velocity.z = direction.z * SPEED
+		var direction := (transform.basis * Vector3(0,0,1)).normalized()
+		velocity.x = direction.x * SPEED
+		velocity.z = direction.z * SPEED
 		check_position.emit(final_position, true)
 		
 "
