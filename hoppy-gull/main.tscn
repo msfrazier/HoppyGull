@@ -1,14 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://byovfrpxavwkx"]
+[gd_scene load_steps=14 format=3 uid="uid://byovfrpxavwkx"]
 
 [ext_resource type="PackedScene" uid="uid://ce6on0dc1jgp1" path="res://gull.tscn" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://ck58xg1mvjsfn" path="res://main.gd" id="1_lquwl"]
 [ext_resource type="PackedScene" uid="uid://bv137l18xut6" path="res://state_machine.tscn" id="2_7mycd"]
-[ext_resource type="PackedScene" uid="uid://b784ohtqpqrfl" path="res://grid_map.tscn" id="4_1bvp3"]
 [ext_resource type="Shader" uid="uid://cmiwc5hkyq4th" path="res://ocean_2.gdshader" id="4_kek77"]
-[ext_resource type="Script" uid="uid://b0vwr4x5mjnox" path="res://grid_map.gd" id="7_5vw27"]
 [ext_resource type="Script" uid="uid://crktnqdxppbti" path="res://kill_screen.gd" id="7_272bh"]
 [ext_resource type="PackedScene" uid="uid://d2ml1r6tf8bth" path="res://dock_2.tscn" id="9_4c57u"]
-[ext_resource type="PackedScene" uid="uid://cmjhacx4w5v5m" path="res://plank_object.tscn" id="9_kek77"]
 
 [sub_resource type="Environment" id="Environment_kek77"]
 background_color = Color(1, 1, 1, 1)
@@ -71,6 +68,30 @@ gradient = SubResource("Gradient_lquwl")
 fill_from = Vector2(1, 0)
 fill_to = Vector2(1, 1)
 
+[sub_resource type="GDScript" id="GDScript_kek77"]
+script/source = "extends Timer
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+func _on_alive_plank_wobble_timer_start() -> void:
+	self.start(3)
+	pass # Replace with function body.
+
+
+func _on_moving_plank_wobble_timer_stop() -> void:
+	self.stop()
+	pass # Replace with function body.
+"
+
 [node name="main" type="Node3D"]
 script = ExtResource("1_lquwl")
 
@@ -86,25 +107,18 @@ transform = Transform3D(1, 0, 0, 0, 0.8965947, 0.44285217, 0, -0.44285217, 0.896
 
 [node name="camera" type="Camera3D" parent="gull"]
 transform = Transform3D(-1, -4.7731522e-08, 7.324236e-08, 4.5598885e-08, 0.43002275, 0.902818, -7.458876e-08, 0.902818, -0.43002275, 0, 2.9603214, -1.2919896)
+current = true
 
 [node name="camera2" type="Camera3D" parent="gull"]
 transform = Transform3D(-1, -4.7731515e-08, 7.3242354e-08, 0, 0.83779496, 0.5459849, -8.742277e-08, 0.5459849, -0.83779496, 0, 6.922907, -7.0364733)
 
 [node name="camera3" type="Camera3D" parent="gull"]
 transform = Transform3D(-1, -4.7731515e-08, 7.3242354e-08, -1.646232e-08, 0.9256197, 0.37845474, -8.58588e-08, 0.37845474, -0.9256197, 0, 2.5875187, -1.8547182)
-current = true
 
 [node name="ocean" type="MeshInstance3D" parent="gull"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05934453, -4.788082, -0.007501006)
 mesh = SubResource("PlaneMesh_4c57u")
 skeleton = NodePath("../..")
-
-[node name="GridMap" parent="." instance=ExtResource("4_1bvp3")]
-visible = false
-data = {
-"cells": PackedInt32Array(65535, 65535, 1)
-}
-script = ExtResource("7_5vw27")
 
 [node name="score_control" type="Control" parent="."]
 layout_mode = 3
@@ -167,24 +181,24 @@ grow_vertical = 2
 text = "Quit
 "
 
-[node name="plank_object" parent="." instance=ExtResource("9_kek77")]
-transform = Transform3D(0.5, 0, 0, 0, 0.482, 0, 0, 0, 0.5, 0, -0.003863763, 0)
-visible = false
-tile_arr = Array[int]([1, 0, 1, 1, 0, 1, 1])
-
-[node name="plank_object2" parent="." instance=ExtResource("9_kek77")]
-transform = Transform3D(0.5, 0, 0, 0, 0.482, 0, 0, 0, 0.5, 0, -0.003863763, 0.4)
-visible = false
-tile_arr = Array[int]([1, 0, 1, 1, 0, 1, 1])
-
 [node name="dock_2" parent="." instance=ExtResource("9_4c57u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="plank_wobble_timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+script = SubResource("GDScript_kek77")
 
 [connection signal="create_plank" from="." to="dock_2" method="_on_main_create_plank"]
 [connection signal="increase_score" from="." to="score_control/score_label" method="_on_main_increase_score"]
 [connection signal="kill_screen_trigger" from="." to="score_control/kill_screen" method="_on_main_kill_screen_trigger"]
+[connection signal="plank_wobble_timer_start" from="state_machine/alive" to="plank_wobble_timer" method="_on_alive_plank_wobble_timer_start"]
+[connection signal="plank_wobble_timer_start" from="state_machine/forward" to="plank_wobble_timer" method="_on_alive_plank_wobble_timer_start"]
 [connection signal="check_position" from="gull" to="." method="_on_gull_check_position"]
 [connection signal="button_down" from="score_control/kill_screen/retry_button" to="." method="_on_retry_button_button_down"]
 [connection signal="button_down" from="score_control/kill_screen/quit_button" to="." method="_on_quit_button_button_down"]
+[connection signal="death_signal" from="dock_2" to="." method="_trigger_kill_screen"]
+[connection signal="timeout" from="plank_wobble_timer" to="dock_2" method="_on_plank_wobble_timer_timeout"]
 
+[editable path="state_machine"]
 [editable path="gull"]

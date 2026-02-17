@@ -1,91 +1,174 @@
-[gd_scene load_steps=4 format=3 uid="uid://cmjhacx4w5v5m"]
+[gd_scene load_steps=8 format=3 uid="uid://cmjhacx4w5v5m"]
 
-[ext_resource type="PackedScene" uid="uid://dmr68etageyf" path="res://rounded_plank_tile.tscn" id="1_jxc1h"]
+[ext_resource type="Script" uid="uid://b4hdygwhcl75k" path="res://plank_object.gd" id="1_3wd3n"]
 [ext_resource type="PackedScene" uid="uid://b6q1sjbjx3s17" path="res://mesh/end_plank.glb" id="2_3wd3n"]
 
-[sub_resource type="GDScript" id="GDScript_3wd3n"]
-script/source = "class_name plank
-extends Node3D
+[sub_resource type="Animation" id="Animation_3wd3n"]
+resource_name = "wobble"
+length = 0.266
+loop_mode = 1
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.06666667, 1, -0.1, 0, 0, 0.13333334, 1, -7.450581e-09, 0, 0, 0.2, 1, 0.1, 0, 0, 0.26666668, 1, 0, 0, 0)
 
-@export var tile_arr := Array([],TYPE_INT,\"\",null)
-@export var railing : bool
-@onready var railing_scene = preload(\"res://railing.tscn\")
+[sub_resource type="Animation" id="Animation_vd2kw"]
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("tile_1")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 2.4, 0, 0)
+tracks/2/type = "position_3d"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("tile_2")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, 1.6, 0, 0)
+tracks/3/type = "position_3d"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("tile_3")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = PackedFloat32Array(0, 1, 0.8, 0, 0)
+tracks/4/type = "position_3d"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("tile_4")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = PackedFloat32Array(0, 1, 0, 0, 0)
+tracks/5/type = "position_3d"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("tile_5")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = PackedFloat32Array(0, 1, -0.8, 0, 0)
+tracks/6/type = "position_3d"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("tile_6")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = PackedFloat32Array(0, 1, -1.6, 0, 0)
+tracks/7/type = "position_3d"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("tile_7")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = PackedFloat32Array(0, 1, -2.4, 0, 0)
+tracks/8/type = "position_3d"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("end_tile")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = PackedFloat32Array(0, 1, -3.2, 0, 0)
+tracks/9/type = "position_3d"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("end_tile2")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = PackedFloat32Array(0, 1, 3.2, 0, 0)
 
+[sub_resource type="Animation" id="Animation_5j53r"]
+resource_name = "fall"
+length = 1.5
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1.5, 1, 0, -6, 0)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5j53r"]
+_data = {
+&"RESET": SubResource("Animation_vd2kw"),
+&"fall": SubResource("Animation_5j53r"),
+&"wobble": SubResource("Animation_3wd3n")
+}
+
+[sub_resource type="GDScript" id="GDScript_cuvie"]
+script/source = "extends Timer
+
+
+# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	build_plank(tile_arr)
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
-	
-func set_tile_arr(new_tile_arr:Array):
-	tile_arr = new_tile_arr
 
-func build_plank(tile_arr):
-	for tile in range(len(tile_arr)):
-		if tile_arr[tile]==1:
-			var rounded_plank_tile = load(\"res://rounded_plank_tile.tscn\").instantiate()
-			get_node(\"tile_{0}\".format([tile+1])).add_child(rounded_plank_tile)
-	if railing:
-		get_node(\"end_tile\").add_child(railing_scene.instantiate())
-		get_node(\"end_tile2\").add_child(railing_scene.instantiate())
+
+func _on_plank_wobble_timer_timeout() -> void:
+	self.start(3)
+	pass # Replace with function body.
 "
 
-[node name="plank_object" type="MeshInstance3D"]
-transform = Transform3D(0.5, 0, 0, 0, 0.482, 0, 0, 0, 0.5, 0, 0, 0)
-script = SubResource("GDScript_3wd3n")
+[node name="animated_plank" type="Node3D"]
+script = ExtResource("1_3wd3n")
 
-[node name="tile_1" type="Marker3D" parent="."]
+[node name="plank_object" type="Node3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.482, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="tile_1" type="Marker3D" parent="plank_object"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0, 0)
 
-[node name="rounded_plank_tile" parent="tile_1" instance=ExtResource("1_jxc1h")]
-visible = false
-
-[node name="tile_2" type="Marker3D" parent="."]
+[node name="tile_2" type="Marker3D" parent="plank_object"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0, 0)
 
-[node name="rounded_plank_tile" parent="tile_2" instance=ExtResource("1_jxc1h")]
-visible = false
-
-[node name="tile_3" type="Marker3D" parent="."]
+[node name="tile_3" type="Marker3D" parent="plank_object"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
 
-[node name="rounded_plank_tile" parent="tile_3" instance=ExtResource("1_jxc1h")]
-visible = false
+[node name="tile_4" type="Marker3D" parent="plank_object"]
 
-[node name="tile_4" type="Marker3D" parent="."]
-
-[node name="rounded_plank_tile" parent="tile_4" instance=ExtResource("1_jxc1h")]
-visible = false
-
-[node name="tile_5" type="Marker3D" parent="."]
+[node name="tile_5" type="Marker3D" parent="plank_object"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
 
-[node name="rounded_plank_tile" parent="tile_5" instance=ExtResource("1_jxc1h")]
-visible = false
-
-[node name="tile_6" type="Marker3D" parent="."]
+[node name="tile_6" type="Marker3D" parent="plank_object"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 0, 0)
 
-[node name="rounded_plank_tile" parent="tile_6" instance=ExtResource("1_jxc1h")]
-visible = false
-
-[node name="tile_7" type="Marker3D" parent="."]
+[node name="tile_7" type="Marker3D" parent="plank_object"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0, 0)
 
-[node name="rounded_plank_tile" parent="tile_7" instance=ExtResource("1_jxc1h")]
-visible = false
-
-[node name="end_tile" type="Marker3D" parent="."]
+[node name="end_tile" type="Marker3D" parent="plank_object"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0, 0)
 
-[node name="end_plank" parent="end_tile" instance=ExtResource("2_3wd3n")]
+[node name="end_plank" parent="plank_object/end_tile" instance=ExtResource("2_3wd3n")]
 
-[node name="end_tile2" type="Marker3D" parent="."]
+[node name="end_tile2" type="Marker3D" parent="plank_object"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0, 0)
 
-[node name="end_plank" parent="end_tile2" instance=ExtResource("2_3wd3n")]
+[node name="end_plank" parent="plank_object/end_tile2" instance=ExtResource("2_3wd3n")]
 
-[editable path="tile_3/rounded_plank_tile"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../plank_object")
+libraries = {
+&"": SubResource("AnimationLibrary_5j53r")
+}
+
+[node name="plank_fall_timer" type="Timer" parent="."]
+one_shot = true
+script = SubResource("GDScript_cuvie")
+
+[connection signal="timeout" from="plank_fall_timer" to="." method="_on_plank_fall_timer_timeout"]

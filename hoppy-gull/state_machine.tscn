@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bv137l18xut6"]
+[gd_scene load_steps=6 format=3 uid="uid://bv137l18xut6"]
 
 [ext_resource type="Script" uid="uid://bsfto8pa5w65m" path="res://state_machine.gd" id="1_35xbh"]
 [ext_resource type="Script" uid="uid://sgj0y5y2pg5q" path="res://kill.gd" id="1_yf3jm"]
@@ -9,16 +9,44 @@ script/source = "extends Node
 
 var fsm: StateMachine
 
+signal plank_wobble_timer_start
+
 func enter():
+	#plank_wobble_timer_start.emit()
+	pass
+
+func exit(next_state):
+	fsm.change_to(next_state)
+	
+	
+#func plank_fall_timeout():
+	#print(\"timeout\")
+
+
+func _unhandled_key_input(event):
+	if event.as_text() in [\"A\",\"D\",\"Left\",\"Right\"]:
+		fsm.change_to('moving')
+	elif event.as_text() in [\"W\",\"Up\"]:
+		fsm.change_to('forward')
+	pass
+"
+
+[sub_resource type="GDScript" id="GDScript_wbto3"]
+script/source = "extends Node
+
+var fsm: StateMachine
+
+signal plank_wobble_timer_start
+
+func enter():
+	#plank_wobble_timer_stop.emit()
+	plank_wobble_timer_start.emit()
 	pass
 
 func exit(next_state):
 	fsm.change_to(next_state)
 
-
 func _unhandled_key_input(event):
-	if event.as_text() in [\"W\",\"A\",\"D\",\"Up\",\"Left\",\"Right\"]:
-		fsm.change_to('moving')
 	pass
 "
 
@@ -33,3 +61,6 @@ script = ExtResource("1_yf3jm")
 
 [node name="moving" type="Node" parent="."]
 script = ExtResource("3_wbto3")
+
+[node name="forward" type="Node" parent="."]
+script = SubResource("GDScript_wbto3")

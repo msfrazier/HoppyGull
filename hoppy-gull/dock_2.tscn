@@ -15,6 +15,8 @@ var next_plank: Array
 @onready var tile_width  = 0.4
 @onready var add_railing = true
 
+signal death_signal
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var planks_arr_z = range(first_plank_pos,last_plank_pos)
@@ -38,12 +40,7 @@ func build_plank():
 
 
 func _on_main_create_plank() -> void:
-	
-	#for i in plank_arr:
-		#var tween = get_tree().create_tween()
-		#tween.tween_property(i,\"position\",
-		#Vector3(i.position.x,i.position.y,i.position.z-tile_width),01.333333333333)
-		##i.position.z -= tile_width
+
 	plank_arr[0].queue_free()
 	plank_arr.pop_front()
 	var new_plank = Array()
@@ -64,6 +61,24 @@ func _on_main_create_plank() -> void:
 	last_plank_pos += 1
 	plank_arr.push_back(plank_inst)
 	
+
+
+func _on_plank_wobble_timer_timeout() -> void:
+	print(\"Start wobble\")
+	var wobble_plank = plank_arr[-1*(first_plank_pos)]
+	wobble_plank.get_node(\"AnimationPlayer\").play(\"wobble\")
+	wobble_plank.get_node(\"plank_fall_timer\").start(3)
+	
+	pass # Replace with function body.
+
+
+func check_if_char_dead(checking_plank) -> void:
+	#print(\"fall\")
+	#print(plank_arr)
+	#print(checking_plank)
+	if checking_plank == plank_arr[6]:
+		death_signal.emit()
+	pass # Replace with function body.
 "
 
 [node name="dock_2" type="AnimatableBody3D"]
