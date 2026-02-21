@@ -3,6 +3,9 @@
 [sub_resource type="GDScript" id="GDScript_ux8ul"]
 script/source = "extends AnimatableBody3D
 
+var config = ConfigFile.new()
+var config_tiles
+
 var current_plank: Array
 var next_plank: Array
 
@@ -19,6 +22,8 @@ signal death_signal
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	var err = config.load(\"res://config.cfg\")
+	#config_tiles = config.get_section_keys('tiles')
 	var planks_arr_z = range(first_plank_pos,last_plank_pos)
 	var railing_inst = railing.instantiate()
 	for i in planks_arr_z:
@@ -46,10 +51,15 @@ func _on_main_create_plank() -> void:
 	var new_plank = Array()
 	for plank_tile in range(7):
 		var random_board = randf()
-		if random_board<=0.85:
-			new_plank.append(1)
+		#Create FISHERMAN obstacle
+		if (plank_tile == 0 or plank_tile == 6) and random_board <= 0.05:
+			new_plank.append(config.get_value('tiles','FISHERMAN_TILE'))
+		#Empty Safe Space
+		elif random_board<=0.85:
+			new_plank.append(config.get_value('tiles','EMPTY_TILE'))
+		#Hole
 		else:
-			new_plank.append(0)
+			new_plank.append(config.get_value('tiles','HOLE_TILE'))
 	var plank_inst = plank.instantiate()
 	plank_inst.tile_arr = new_plank
 	plank_inst.position.z = (last_plank_pos) * tile_width

@@ -18,6 +18,14 @@ func _ready() -> void:
 	state_machine = $state_machine
 	
 	screen_size = get_viewport().get_visible_rect().size
+	
+	#var config = ConfigFile.new()
+#
+	#config.set_value('tiles','HOLE_TILE', 0)
+	#config.set_value('tiles','EMPTY_TILE', 1)
+	#config.set_value('tiles','FISHERMAN_TILE',2)
+	#
+	#config.save('res://config.cfg')
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

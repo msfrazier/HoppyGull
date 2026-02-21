@@ -1,0 +1,54 @@
+[gd_scene load_steps=5 format=3 uid="uid://ddqw580utdhhc"]
+
+[ext_resource type="PackedScene" uid="uid://dq4b5x45apivi" path="res://mesh/fisherman.glb" id="1_do6aj"]
+
+[sub_resource type="Animation" id="Animation_do6aj"]
+resource_name = "cast"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("fisherman/arms:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.0044281688, -0.05127682, -0.46894437), Vector3(-0.046618093, 0.021817457, -2.5637348)]
+}
+
+[sub_resource type="Animation" id="Animation_7xu1q"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("fisherman/arms:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.0044281688, -0.05127682, -0.46894437)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_n3ju8"]
+_data = {
+&"RESET": SubResource("Animation_7xu1q"),
+&"cast": SubResource("Animation_do6aj")
+}
+
+[node name="fisherman" type="Node3D"]
+
+[node name="fisherman" parent="." instance=ExtResource("1_do6aj")]
+
+[node name="arms" parent="fisherman" index="1"]
+transform = Transform3D(0.44984663, 0.021690732, -0.002464231, -0.22818111, 0.042888194, -0.00021290097, 0.022075182, 0.0013033749, 0.048015278, -0.0049918517, 1.0030805, 0.48696595)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_n3ju8")
+}
+
+[editable path="fisherman"]
