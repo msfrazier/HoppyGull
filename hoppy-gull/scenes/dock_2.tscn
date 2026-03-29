@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://c1bdtga7ncdtx"]
+[gd_scene load_steps=2 format=3 uid="uid://d2ml1r6tf8bth"]
 
 [sub_resource type="GDScript" id="GDScript_ux8ul"]
 script/source = "extends AnimatableBody3D
@@ -13,8 +13,8 @@ var next_plank: Array
 @onready var first_plank_pos = -6
 @onready var last_plank_pos = 25
 
-@onready var plank = preload(\"res://scenes/plank_object.tscn\")
-@onready var railing = preload(\"res://scenes/railing.tscn\")
+@onready var plank = preload(\"res://plank_object.tscn\")
+@onready var railing = preload(\"res://railing.tscn\")
 @onready var tile_width  = 0.4
 @onready var add_railing = true
 

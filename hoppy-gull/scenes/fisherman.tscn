@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dud1yufvkbivs"]
+[gd_scene load_steps=9 format=3 uid="uid://ddqw580utdhhc"]
 
 [ext_resource type="Script" uid="uid://d1h7fsxqmac1" path="res://fisherman.gd" id="1_7xu1q"]
 [ext_resource type="PackedScene" uid="uid://dq4b5x45apivi" path="res://mesh/fisherman.glb" id="1_do6aj"]
+[ext_resource type="PackedScene" uid="uid://dq8igt6qff8mw" path="res://soft_lure.tscn" id="3_n3ju8"]
 [ext_resource type="PackedScene" uid="uid://drq32mmcx6mkr" path="res://scenes/bobber.tscn" id="4_bkc22"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7xu1q"]
@@ -51,7 +52,7 @@ script = ExtResource("1_7xu1q")
 [node name="fisherman" parent="." instance=ExtResource("1_do6aj")]
 
 [node name="arms" parent="fisherman" index="1"]
-transform = Transform3D(0.44984663, 0.021690732, -0.0024642325, -0.22818111, 0.042888194, -0.0002129011, 0.022075182, 0.0013033749, 0.048015308, -0.0049918517, 1.0030805, 0.48696595)
+transform = Transform3D(0.44984663, 0.021690732, -0.002464232, -0.22818111, 0.042888194, -0.00021290107, 0.022075182, 0.0013033749, 0.0480153, -0.0049918517, 1.0030805, 0.48696595)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="fisherman"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90000004, 0)
@@ -62,6 +63,10 @@ shape = SubResource("CapsuleShape3D_7xu1q")
 
 [node name="above_head" type="Marker3D" parent="fisherman"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 0)
+
+[node name="soft_lure" parent="fisherman" instance=ExtResource("3_n3ju8")]
+transform = Transform3D(-0.86562747, 0.026186667, 0.49999848, 0.030237688, 0.9995471, 1.894167e-07, -0.49977025, 0.01511909, -0.8660229, -15.769033, -14.170811, 0)
+visible = false
 
 [node name="bobber" parent="fisherman" instance=ExtResource("4_bkc22")]
 transform = Transform3D(5.17, 0, 0, 0, 5.17, 0, 0, 0, 5.17, -15.769033, -14.170811, 0)
@@ -78,4 +83,3 @@ autostart = true
 [connection signal="timeout" from="cast_timer" to="." method="_on_cast_timer_timeout"]
 
 [editable path="fisherman"]
-[editable path="fisherman/bobber"]

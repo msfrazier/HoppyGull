@@ -1,12 +1,15 @@
 extends Node3D
 
+@export var god_mode := false
+
 @onready var gridMap := $GridMap
 @onready var gull := $gull
 @onready var kill_screen := $score_control/kill_screen
 @onready var dock := $dock_2
-
 @onready var screen_size: Vector2
 @onready var state_machine: StateMachine
+
+var config: ConfigFile
 
 signal increase_score
 signal create_plank()
@@ -19,13 +22,17 @@ func _ready() -> void:
 	
 	screen_size = get_viewport().get_visible_rect().size
 	
-	#var config = ConfigFile.new()
+	config = ConfigFile.new()
 #
 	#config.set_value('tiles','HOLE_TILE', 0)
 	#config.set_value('tiles','EMPTY_TILE', 1)
 	#config.set_value('tiles','FISHERMAN_TILE',2)
 	#
 	#config.save('res://config.cfg')
+	
+	var err = config.load("res://config.cfg")
+	
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -37,9 +44,14 @@ func _on_gull_check_position(final_position: Vector3, is_forward: bool):
 		check_tile = dock.current_plank[gull.current_position]
 	elif is_forward:
 		check_tile = dock.next_plank[gull.current_position]
-	if check_tile==0:
+	#print(check_tile)
+	if check_tile == config.get_value('tiles','HOLE_TILE'):
 		_trigger_kill_screen()
+	elif check_tile == config.get_value('tiles','FISHERMAN_TILE'):
+		print("blocked")
+		pass
 	elif is_forward:
+		state_machine.set_state('forward')
 		create_plank.emit()
 		increase_score.emit()
 	
@@ -58,5 +70,6 @@ func _on_quit_button_button_down() -> void:
 
 
 func _trigger_kill_screen():
-	kill_screen_trigger.emit(screen_size)
-	state_machine.set_state('kill')
+	if !god_mode:
+		kill_screen_trigger.emit(screen_size)
+		state_machine.set_state('kill')

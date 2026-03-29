@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://y58ud4mtvpiy"]
+[gd_scene load_steps=8 format=3 uid="uid://cmjhacx4w5v5m"]
 
 [ext_resource type="Script" uid="uid://b4hdygwhcl75k" path="res://plank_object.gd" id="1_3wd3n"]
 [ext_resource type="PackedScene" uid="uid://b6q1sjbjx3s17" path="res://mesh/end_plank.glb" id="2_3wd3n"]
