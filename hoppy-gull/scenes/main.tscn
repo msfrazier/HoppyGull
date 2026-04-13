@@ -1,9 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://bc1vcnnjwo5be"]
+[gd_scene load_steps=12 format=3 uid="uid://bc1vcnnjwo5be"]
 
 [ext_resource type="Script" uid="uid://ck58xg1mvjsfn" path="res://main.gd" id="1_tefeu"]
 [ext_resource type="PackedScene" uid="uid://dj12r64mw1xl1" path="res://state_machine.tscn" id="2_o6xl0"]
 [ext_resource type="PackedScene" uid="uid://b7i6pr8saj2py" path="res://gull.tscn" id="3_tipki"]
-[ext_resource type="Shader" uid="uid://cmiwc5hkyq4th" path="res://ocean_2.gdshader" id="4_85g3d"]
+[ext_resource type="PackedScene" uid="uid://b7fs5jfjy0n50" path="res://scenes/ocean.tscn" id="4_tefeu"]
 [ext_resource type="Script" uid="uid://crktnqdxppbti" path="res://kill_screen.gd" id="5_choun"]
 [ext_resource type="PackedScene" uid="uid://c1bdtga7ncdtx" path="res://dock_2.tscn" id="6_ya4ey"]
 
@@ -13,29 +13,6 @@ ambient_light_source = 2
 ambient_light_color = Color(0.7162959, 0.7162963, 0.7162962, 1)
 fog_light_color = Color(0.42377743, 0.70840776, 0.8119097, 1)
 fog_density = 0.044
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kek77"]
-render_priority = 0
-shader = ExtResource("4_85g3d")
-shader_parameter/WATER_COL = Color(0.039215688, 0.52156866, 0.8784314, 1)
-shader_parameter/WATER2_COL = Color(0.04, 0.35, 0.78, 1)
-shader_parameter/FOAM_COL = Color(0.8125, 0.9609, 0.9648, 1)
-shader_parameter/distortion_speed = 2.0
-shader_parameter/tile = Vector2(64, 64)
-shader_parameter/height = 2.0
-shader_parameter/wave_size = Vector2(16, 32)
-shader_parameter/water_speed = Vector2(0, 0.015)
-shader_parameter/wave_speed = 1.5
-shader_parameter/distortion = 0.2
-shader_parameter/cell_amount = 8
-shader_parameter/period = Vector2(5, 10)
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_4c57u"]
-lightmap_size_hint = Vector2i(642, 642)
-material = SubResource("ShaderMaterial_kek77")
-size = Vector2(128, 128)
-subdivide_width = 100
-subdivide_depth = 100
 
 [sub_resource type="GDScript" id="GDScript_lquwl"]
 script/source = "extends Label
@@ -115,10 +92,8 @@ transform = Transform3D(-1, -4.7731515e-08, 7.3242354e-08, 0, 0.83779496, 0.5459
 [node name="camera3" type="Camera3D" parent="gull"]
 transform = Transform3D(-1, -4.7731515e-08, 7.3242354e-08, -1.646232e-08, 0.9256197, 0.37845474, -8.58588e-08, 0.37845474, -0.9256197, 0, 2.5875187, -1.8547182)
 
-[node name="ocean" type="MeshInstance3D" parent="gull"]
+[node name="ocean" parent="gull" instance=ExtResource("4_tefeu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05934453, -4.788082, -0.007501006)
-mesh = SubResource("PlaneMesh_4c57u")
-skeleton = NodePath("../..")
 
 [node name="score_control" type="Control" parent="."]
 layout_mode = 3
@@ -203,3 +178,4 @@ script = SubResource("GDScript_kek77")
 
 [editable path="state_machine"]
 [editable path="gull"]
+[editable path="gull/ocean"]

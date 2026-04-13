@@ -1,0 +1,106 @@
+[gd_scene load_steps=9 format=3 uid="uid://b7fs5jfjy0n50"]
+
+[ext_resource type="Shader" uid="uid://cmiwc5hkyq4th" path="res://ocean_2.gdshader" id="1_7i2eo"]
+[ext_resource type="PackedScene" uid="uid://dce7txcikvmfe" path="res://scenes/splash_cpu.tscn" id="2_fiuhb"]
+
+[sub_resource type="GDScript" id="GDScript_mn261"]
+script/source = "extends Node3D
+
+var splash_CPU: Resource
+var ripple_decal: Resource
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	splash_CPU = load(\"res://scenes/splash_cpu.tscn\")
+	ripple_decal = load(\"res://scenes/ripple_decal.tscn\")
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+func _on_ripple_completed():
+	print(\"done\")
+
+func _on_area_3d_body_entered(body: Node3D) -> void:
+	print(\"entered: \", body)
+	var splash: CPUParticles3D = splash_CPU.instantiate()
+	var ripple: Decal = ripple_decal.instantiate()
+	print(body.global_position)
+	splash.global_position = body.global_position
+	splash.emitting = true
+	ripple.position.x = body.global_position.x
+	ripple.position.z = body.global_position.z
+	
+	self.add_child(splash)
+	self.add_child(ripple)
+	
+	await ripple.tween_finished
+	ripple.queue_free()
+	
+	await splash.finished
+	print(\"splash_finished\")
+	splash.queue_free()
+	
+	pass # Replace with function body.
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kek77"]
+render_priority = 0
+shader = ExtResource("1_7i2eo")
+shader_parameter/WATER_COL = Color(0.039215688, 0.52156866, 0.8784314, 1)
+shader_parameter/WATER2_COL = Color(0.04, 0.35, 0.78, 1)
+shader_parameter/FOAM_COL = Color(0.8125, 0.9609, 0.9648, 1)
+shader_parameter/distortion_speed = 2.0
+shader_parameter/tile = Vector2(64, 64)
+shader_parameter/height = 2.0
+shader_parameter/wave_size = Vector2(16, 32)
+shader_parameter/water_speed = Vector2(0, 0.015)
+shader_parameter/wave_speed = 1.5
+shader_parameter/distortion = 0.2
+shader_parameter/cell_amount = 8
+shader_parameter/period = Vector2(5, 10)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_4c57u"]
+lightmap_size_hint = Vector2i(642, 642)
+material = SubResource("ShaderMaterial_kek77")
+size = Vector2(128, 128)
+subdivide_width = 500
+subdivide_depth = 500
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_7i2eo"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_fiuhb"]
+size = Vector2(0.1, 0.1)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_mn261"]
+points = PackedVector3Array(-63.99997, 0, -63.99997, -63.99997, 0, 63.999992, 64, 0, -63.99997, 64, 0, 63.999992)
+
+[node name="ocean" type="Node3D"]
+script = SubResource("GDScript_mn261")
+
+[node name="ocean_mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_4c57u")
+skeleton = NodePath("../..")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+visible = false
+emitting = false
+amount = 25
+lifetime = 0.8
+one_shot = true
+explosiveness = 1.0
+randomness = 0.4
+process_material = SubResource("ParticleProcessMaterial_7i2eo")
+draw_pass_1 = SubResource("QuadMesh_fiuhb")
+
+[node name="splash_CPU" parent="." instance=ExtResource("2_fiuhb")]
+visible = false
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("ConvexPolygonShape3D_mn261")
+
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

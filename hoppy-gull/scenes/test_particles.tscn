@@ -1,0 +1,78 @@
+[gd_scene load_steps=6 format=3 uid="uid://bug5opplqp5a2"]
+
+[ext_resource type="PackedScene" uid="uid://b7fs5jfjy0n50" path="res://scenes/ocean.tscn" id="1_xfm2p"]
+
+[sub_resource type="GDScript" id="GDScript_xfm2p"]
+script/source = "extends Node3D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+func _on_area_3d_body_entered(body: Node3D) -> void:
+	var new_pos: Vector3 = Vector3(
+		randf_range(-3.5,3.5),
+		0,
+		randf_range(-3.35,3.35)
+	)
+	body.global_position = new_pos
+	body.linear_velocity = Vector3(0,0,0)
+	pass # Replace with function body.
+"
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_xfm2p"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_6pqbw"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_mn261"]
+points = PackedVector3Array(-63.99997, 0, -63.99997, -63.99997, 0, 63.999992, 64, 0, -63.99997, 64, 0, 63.999992)
+
+[node name="test_particles" type="Node3D"]
+script = SubResource("GDScript_xfm2p")
+
+[node name="ocean" parent="." instance=ExtResource("1_xfm2p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05934453, -4.788082, -0.007501006)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.9312874, 0.36004812, 0.055399746, -0.13856405, -0.4907623, 0.86020476, 0.33690327, 0.7934215, 0.5069307, 2.8140206, 7.0630245, 4.891492)
+shadow_enabled = true
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("SphereShape3D_xfm2p")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/CollisionShape3D"]
+mesh = SubResource("SphereMesh_6pqbw")
+skeleton = NodePath("../..")
+
+[node name="RigidBody3D2" type="RigidBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D2"]
+shape = SubResource("SphereShape3D_xfm2p")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2/CollisionShape3D"]
+mesh = SubResource("SphereMesh_6pqbw")
+skeleton = NodePath("../..")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-1, -3.0283424e-08, 6.493164e-08, 4.559889e-08, 0.4300228, 0.902818, -5.526251e-08, 0.902818, -0.4300228, 0, 2.9603214, -1.2919896)
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -9.529802, 0)
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("ConvexPolygonShape3D_mn261")
+
+[connection signal="body_entered" from="RigidBody3D" to="ocean" method="_on_rigid_body_3d_body_entered"]
+[connection signal="body_entered" from="RigidBody3D2" to="ocean" method="_on_rigid_body_3d_body_entered"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+
+[editable path="ocean"]

@@ -12,6 +12,7 @@ uniform float wave_speed = 1.5;
 uniform float distortion = 0.2;
 uniform int cell_amount = 20;
 uniform vec2 period = vec2(5., 10.);
+uniform sampler2D collision;
 
 const float M_2PI = 6.283185307;
 const float M_6PI = 18.84955592;

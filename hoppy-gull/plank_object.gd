@@ -9,6 +9,8 @@ var config_tiles
 @onready var railing_1_scene = preload("res://scenes/railing_1.tscn")
 @onready var railing_2_scene = preload("res://scenes/railing_2.tscn")
 @onready var animation_player = $AnimationPlayer
+@onready var rounded_plank_tile_scene = load("res://scenes/rounded_plank_tile.tscn")
+@onready var fisherman_scene = load("res://scenes/fisherman.tscn")
 
 signal check_char_fell
 signal lure_tile_signal
@@ -17,6 +19,8 @@ func _ready() -> void:
 	config_tiles = config.load("res://config.cfg")
 	build_plank(tile_arr)
 	check_char_fell.connect(get_tree().current_scene.get_node("dock_2").check_if_char_dead.bind())
+	
+	
 	pass # Replace with function body.
 
 
@@ -30,10 +34,10 @@ func set_tile_arr(new_tile_arr:Array):
 func build_plank(tile_arr):
 	for tile in range(len(tile_arr)):
 		if tile_arr[tile]!=0:
-			var rounded_plank_tile = load("res://scenes/rounded_plank_tile.tscn").instantiate()
+			var rounded_plank_tile = rounded_plank_tile_scene.instantiate()
 			get_node("plank_object/tile_{0}".format([tile+1])).add_child(rounded_plank_tile)
 		if tile_arr[tile]==2:
-			var fisherman = load("res://scenes/fisherman.tscn").instantiate()
+			var fisherman = fisherman_scene.instantiate()
 			if tile==0:
 				fisherman.rotate_y(PI)
 			get_node("plank_object/tile_{0}".format([tile+1])).add_child(fisherman)
