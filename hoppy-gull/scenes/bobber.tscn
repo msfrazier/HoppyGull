@@ -44,17 +44,20 @@ shadow_mesh = SubResource("ArrayMesh_40wi8")
 [sub_resource type="BoxShape3D" id="BoxShape3D_rn3pg"]
 size = Vector3(0.025, 0.025, 0.025)
 
-[node name="bobber" type="Node3D"]
+[node name="bobber" type="StaticBody3D"]
+disable_mode = 2
+collision_mask = 2
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-collision_layer = 2
-collision_mask = 0
-
-[node name="Sphere" type="MeshInstance3D" parent="StaticBody3D"]
+[node name="Sphere" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_u3y0r")
 skeleton = NodePath("")
 
-[node name="bobber_area3d" type="Area3D" parent="StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_rn3pg")
+disabled = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D/bobber_area3d"]
+[node name="bobber_area3d" type="Area3D" parent="."]
+collision_mask = 2
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="bobber_area3d"]
 shape = SubResource("BoxShape3D_rn3pg")

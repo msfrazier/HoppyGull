@@ -1,11 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://bc1vcnnjwo5be"]
+[gd_scene load_steps=10 format=3 uid="uid://bc1vcnnjwo5be"]
 
 [ext_resource type="Script" uid="uid://ck58xg1mvjsfn" path="res://main.gd" id="1_tefeu"]
 [ext_resource type="PackedScene" uid="uid://dj12r64mw1xl1" path="res://state_machine.tscn" id="2_o6xl0"]
 [ext_resource type="PackedScene" uid="uid://b7i6pr8saj2py" path="res://gull.tscn" id="3_tipki"]
 [ext_resource type="PackedScene" uid="uid://b7fs5jfjy0n50" path="res://scenes/ocean.tscn" id="4_tefeu"]
-[ext_resource type="Script" uid="uid://crktnqdxppbti" path="res://kill_screen.gd" id="5_choun"]
+[ext_resource type="PackedScene" uid="uid://b7eu2puxdp3gx" path="res://scenes/score_control.tscn" id="5_tefeu"]
 [ext_resource type="PackedScene" uid="uid://c1bdtga7ncdtx" path="res://dock_2.tscn" id="6_ya4ey"]
+[ext_resource type="PackedScene" uid="uid://dphnd3ko80tru" path="res://scenes/feather_2.tscn" id="8_85g3d"]
 
 [sub_resource type="Environment" id="Environment_kek77"]
 background_color = Color(1, 1, 1, 1)
@@ -13,37 +14,6 @@ ambient_light_source = 2
 ambient_light_color = Color(0.7162959, 0.7162963, 0.7162962, 1)
 fog_light_color = Color(0.42377743, 0.70840776, 0.8119097, 1)
 fog_density = 0.044
-
-[sub_resource type="GDScript" id="GDScript_lquwl"]
-script/source = "extends Label
-
-@onready var score = 0
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	text = \"Score: %s\" % score
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
-func _on_main_increase_score() -> void:
-	score = score + 1
-	text = \"Score: %s\" % score
-	pass # Replace with function body.
-"
-
-[sub_resource type="Gradient" id="Gradient_lquwl"]
-offsets = PackedFloat32Array(0, 0.45454547, 0.78099173, 1)
-colors = PackedColorArray(0.9871456, 0.3893037, 0, 1, 1.8289685e-06, 0.69956255, 0.7522667, 1, 2.4065375e-07, 0.36918318, 0.31677598, 1, 1.1431053e-07, 0.22153276, 0.10963806, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_7mycd"]
-gradient = SubResource("Gradient_lquwl")
-fill_from = Vector2(1, 0)
-fill_to = Vector2(1, 1)
 
 [sub_resource type="GDScript" id="GDScript_kek77"]
 script/source = "extends Timer
@@ -80,102 +50,57 @@ environment = SubResource("Environment_kek77")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.8965947, 0.44285217, 0, -0.44285217, 0.8965947, 0, 17.712, 15.123945)
 
-[node name="gull" parent="." instance=ExtResource("3_tipki")]
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.9978998, 0.06477615, 0, -0.06477615, -0.9978998, 0, 3.9549637, -18.221773)
 
-[node name="camera" type="Camera3D" parent="gull"]
-transform = Transform3D(-1, -4.7731522e-08, 7.324236e-08, 4.5598885e-08, 0.43002275, 0.902818, -7.458876e-08, 0.902818, -0.43002275, 0, 2.9603214, -1.2919896)
-current = true
+[node name="score_control" parent="." instance=ExtResource("5_tefeu")]
 
-[node name="camera2" type="Camera3D" parent="gull"]
-transform = Transform3D(-1, -4.7731515e-08, 7.3242354e-08, 0, 0.83779496, 0.5459849, -8.742277e-08, 0.5459849, -0.83779496, 0, 6.922907, -7.0364733)
-
-[node name="camera3" type="Camera3D" parent="gull"]
-transform = Transform3D(-1, -4.7731515e-08, 7.3242354e-08, -1.646232e-08, 0.9256197, 0.37845474, -8.58588e-08, 0.37845474, -0.9256197, 0, 2.5875187, -1.8547182)
-
-[node name="ocean" parent="gull" instance=ExtResource("4_tefeu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05934453, -4.788082, -0.007501006)
-
-[node name="score_control" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
+[node name="kill_screen" parent="score_control" index="0"]
+anchors_preset = -1
+anchor_top = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="score_label" type="Label" parent="score_control"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-script = SubResource("GDScript_lquwl")
-
-[node name="kill_screen" type="TextureRect" parent="score_control"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -128.0
-offset_top = 324.0
-offset_right = 128.0
-offset_bottom = 708.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("GradientTexture2D_7mycd")
-script = ExtResource("5_choun")
-
-[node name="retry_button" type="Button" parent="score_control/kill_screen"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -64.0
-offset_top = -74.333
-offset_right = 64.0
-offset_bottom = -43.332825
-grow_horizontal = 2
-grow_vertical = 2
-text = "Retry"
-
-[node name="quit_button" type="Button" parent="score_control/kill_screen"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -64.0
-offset_top = 28.625
-offset_right = 64.0
-offset_bottom = 59.625183
-grow_horizontal = 2
-grow_vertical = 2
-text = "Quit
-"
+offset_top = 0.0
+offset_bottom = 384.0
 
 [node name="dock_2" parent="." instance=ExtResource("6_ya4ey")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 
 [node name="plank_wobble_timer" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
 script = SubResource("GDScript_kek77")
 
+[node name="feather2" parent="." instance=ExtResource("8_85g3d")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.6, 0.6, 1.5)
+visible = false
+
+[node name="gull" parent="." instance=ExtResource("3_tipki")]
+
+[node name="camera" type="Camera3D" parent="gull"]
+transform = Transform3D(-1, -4.7731522e-08, 7.324236e-08, 4.5598885e-08, 0.43002275, 0.902818, -7.458876e-08, 0.902818, -0.43002275, 0, 3.0603213, -1.2919896)
+current = true
+
+[node name="camera2" type="Camera3D" parent="gull"]
+transform = Transform3D(-1, -4.7731515e-08, 7.3242354e-08, 0, 0.83779496, 0.5459849, -8.742277e-08, 0.5459849, -0.83779496, 0, 7.022907, -7.0364733)
+
+[node name="camera3" type="Camera3D" parent="gull"]
+transform = Transform3D(-1, -4.7731522e-08, 7.324236e-08, -1.646232e-08, 0.9256198, 0.37845477, -8.58588e-08, 0.37845477, -0.9256198, 0, 2.6875186, -1.8547182)
+
+[node name="ocean" parent="gull" instance=ExtResource("4_tefeu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05934453, -4.688082, -0.007501006)
+
+[node name="ocean_mesh" parent="gull/ocean" index="0"]
+skeleton = NodePath("")
+
 [connection signal="create_plank" from="." to="dock_2" method="_on_main_create_plank"]
-[connection signal="increase_score" from="." to="score_control/score_label" method="_on_main_increase_score"]
+[connection signal="increase_score" from="." to="score_control/VBoxContainer/score_label" method="_on_main_increase_score"]
 [connection signal="kill_screen_trigger" from="." to="score_control/kill_screen" method="_on_main_kill_screen_trigger"]
 [connection signal="plank_wobble_timer_start" from="state_machine/alive" to="plank_wobble_timer" method="_on_alive_plank_wobble_timer_start"]
 [connection signal="plank_wobble_timer_start" from="state_machine/forward" to="plank_wobble_timer" method="_on_alive_plank_wobble_timer_start"]
-[connection signal="check_position" from="gull" to="." method="_on_gull_check_position"]
-[connection signal="trigger_kill_screen" from="gull" to="." method="_trigger_kill_screen"]
-[connection signal="button_down" from="score_control/kill_screen/retry_button" to="." method="_on_retry_button_button_down"]
-[connection signal="button_down" from="score_control/kill_screen/quit_button" to="." method="_on_quit_button_button_down"]
+[connection signal="pressed" from="score_control/kill_screen/retry_button" to="." method="_on_retry_button_button_down"]
+[connection signal="pressed" from="score_control/kill_screen/quit_button" to="." method="_on_quit_button_button_down"]
 [connection signal="death_signal" from="dock_2" to="." method="_trigger_kill_screen"]
 [connection signal="timeout" from="plank_wobble_timer" to="dock_2" method="_on_plank_wobble_timer_timeout"]
 
 [editable path="state_machine"]
-[editable path="gull"]
+[editable path="score_control"]
 [editable path="gull/ocean"]

@@ -45,6 +45,7 @@ func _on_cast_timer_timeout() -> void:
 		#cast_out.emit()
 		casting = false
 		reeling_in = false
+		_cast_out()
 	pass
 
 func _on_lure_tile(lure_tile_pos: Vector3) -> void:
@@ -69,3 +70,24 @@ func _on_lure_tile(lure_tile_pos: Vector3) -> void:
 	)
 	
 	pass 
+
+func _cast_out() -> void:
+	var tween = get_tree().create_tween().set_parallel()
+	tween.tween_method(
+		_quadratic_bezier.bind(
+			bobber.global_position,
+			above_head.global_position,
+			bobber_pos,
+		), 0.0, 1.0, 1
+	)
+	tween.tween_property(
+		bobber,
+		"rotation",
+		Vector3(
+			randf_range(-2*PI,2*PI),
+			randf_range(-2*PI,2*PI),
+			randf_range(-2*PI,2*PI)
+		),
+		1
+	)
+	pass

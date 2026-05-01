@@ -26,8 +26,7 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 	print(\"entered: \", body)
 	var splash: CPUParticles3D = splash_CPU.instantiate()
 	var ripple: Decal = ripple_decal.instantiate()
-	print(body.global_position)
-	splash.global_position = body.global_position
+	splash.global_position = body.position
 	splash.emitting = true
 	ripple.position.x = body.global_position.x
 	ripple.position.z = body.global_position.z
@@ -42,6 +41,29 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 	print(\"splash_finished\")
 	splash.queue_free()
 	
+	pass # Replace with function body.
+
+
+func _on_area_3d_area_entered(area: Area3D) -> void:
+	print(\"entered: \", area)
+	var splash: CPUParticles3D = splash_CPU.instantiate()
+	var ripple: Decal = ripple_decal.instantiate()
+	splash.global_position = area.position
+	splash.emitting = true
+	ripple.position.x = area.global_position.x
+	ripple.position.z = area.global_position.z
+	
+	self.add_child(splash)
+	self.add_child(ripple)
+	
+	await ripple.tween_finished
+	ripple.queue_free()
+	
+	await splash.finished
+	print(\"splash_finished\")
+	splash.queue_free()
+	
+	pass # Replace with function body.
 	pass # Replace with function body.
 "
 
@@ -98,6 +120,7 @@ draw_pass_1 = SubResource("QuadMesh_fiuhb")
 visible = false
 
 [node name="Area3D" type="Area3D" parent="."]
+collision_mask = 2
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("ConvexPolygonShape3D_mn261")

@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cmjhacx4w5v5m"]
+[gd_scene load_steps=9 format=3 uid="uid://cmjhacx4w5v5m"]
 
 [ext_resource type="Script" uid="uid://b4hdygwhcl75k" path="res://plank_object.gd" id="1_3wd3n"]
 [ext_resource type="PackedScene" uid="uid://b6q1sjbjx3s17" path="res://mesh/end_plank.glb" id="2_3wd3n"]
+[ext_resource type="PackedScene" uid="uid://bcf3uqsef1jw4" path="res://scenes/plank_tile.tscn" id="3_gjmua"]
 
 [sub_resource type="Animation" id="Animation_vd2kw"]
 length = 0.001
@@ -15,66 +16,17 @@ tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0)
 tracks/1/type = "position_3d"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("tile_1")
+tracks/1/path = NodePath("../end_tile")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
-tracks/1/keys = PackedFloat32Array(0, 1, 2.4, 0, 0)
+tracks/1/keys = PackedFloat32Array(0, 1, -1.6, 0, 0)
 tracks/2/type = "position_3d"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("tile_2")
+tracks/2/path = NodePath("../end_tile2")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = PackedFloat32Array(0, 1, 1.6, 0, 0)
-tracks/3/type = "position_3d"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("tile_3")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = PackedFloat32Array(0, 1, 0.8, 0, 0)
-tracks/4/type = "position_3d"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("tile_4")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = PackedFloat32Array(0, 1, 0, 0, 0)
-tracks/5/type = "position_3d"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("tile_5")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = PackedFloat32Array(0, 1, -0.8, 0, 0)
-tracks/6/type = "position_3d"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("tile_6")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = PackedFloat32Array(0, 1, -1.6, 0, 0)
-tracks/7/type = "position_3d"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("tile_7")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = PackedFloat32Array(0, 1, -2.4, 0, 0)
-tracks/8/type = "position_3d"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("../end_tile")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = PackedFloat32Array(0, 1, -1.6, 0, 0)
-tracks/9/type = "position_3d"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("../end_tile2")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = PackedFloat32Array(0, 1, 1.6, 0, 0)
 
 [sub_resource type="Animation" id="Animation_5j53r"]
 resource_name = "fall"
@@ -129,27 +81,26 @@ func _on_plank_wobble_timer_timeout() -> void:
 script = ExtResource("1_3wd3n")
 
 [node name="plank_object" type="Node3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.482, 0, 0, 0, 0.5, 0, 0, 0)
 
 [node name="tile_1" type="Marker3D" parent="plank_object"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, 0)
 
 [node name="tile_2" type="Marker3D" parent="plank_object"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
 
 [node name="tile_3" type="Marker3D" parent="plank_object"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
 
 [node name="tile_4" type="Marker3D" parent="plank_object"]
 
 [node name="tile_5" type="Marker3D" parent="plank_object"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
 
 [node name="tile_6" type="Marker3D" parent="plank_object"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
 
 [node name="tile_7" type="Marker3D" parent="plank_object"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../plank_object")
@@ -162,13 +113,21 @@ one_shot = true
 script = SubResource("GDScript_cuvie")
 
 [node name="end_tile" type="Marker3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.482, 0, 0, 0, 0.5, -1.6, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 0, 0)
 
 [node name="end_plank" parent="end_tile" instance=ExtResource("2_3wd3n")]
+visible = false
+
+[node name="plank" parent="end_tile" instance=ExtResource("3_gjmua")]
+freeze = true
 
 [node name="end_tile2" type="Marker3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.482, 0, 0, 0, 0.5, 1.6, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0, 0)
 
 [node name="end_plank" parent="end_tile2" instance=ExtResource("2_3wd3n")]
+visible = false
+
+[node name="plank" parent="end_tile2" instance=ExtResource("3_gjmua")]
+freeze = true
 
 [connection signal="timeout" from="plank_fall_timer" to="." method="_on_plank_fall_timer_timeout"]

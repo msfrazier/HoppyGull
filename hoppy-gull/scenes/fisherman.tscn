@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d1h7fsxqmac1" path="res://fisherman.gd" id="1_7xu1q"]
 [ext_resource type="PackedScene" uid="uid://dq4b5x45apivi" path="res://mesh/fisherman.glb" id="1_do6aj"]
-[ext_resource type="PackedScene" uid="uid://dq8igt6qff8mw" path="res://soft_lure.tscn" id="3_n3ju8"]
+[ext_resource type="PackedScene" uid="uid://dq8igt6qff8mw" path="res://scenes/soft_lure.tscn" id="3_n3ju8"]
 [ext_resource type="PackedScene" uid="uid://drq32mmcx6mkr" path="res://scenes/bobber.tscn" id="4_bkc22"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7xu1q"]
@@ -47,12 +47,13 @@ _data = {
 }
 
 [node name="fisherman" type="Node3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.482, 0, 0, 0, 0.5, 0, 0, 0)
 script = ExtResource("1_7xu1q")
 
 [node name="fisherman" parent="." instance=ExtResource("1_do6aj")]
 
 [node name="arms" parent="fisherman" index="1"]
-transform = Transform3D(0.44984663, 0.021690732, -0.002464232, -0.22818111, 0.042888194, -0.00021290107, 0.022075182, 0.0013033749, 0.0480153, -0.0049918517, 1.0030805, 0.48696595)
+transform = Transform3D(0.44984663, 0.021690732, -0.0024642323, -0.22818111, 0.042888194, -0.00021290108, 0.022075182, 0.0013033749, 0.048015304, -0.0049918517, 1.0030805, 0.48696595)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="fisherman"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90000004, 0)

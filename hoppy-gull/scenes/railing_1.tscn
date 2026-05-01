@@ -3,3 +3,4 @@
 [ext_resource type="PackedScene" uid="uid://cklmfwvpb47yk" path="res://mesh/railing_1.glb" id="1_q213u"]
 
 [node name="railing_12" instance=ExtResource("1_q213u")]
+transform = Transform3D(0.5, 0, 0, 0, 0.482, 0, 0, 0, 0.5, 0, 0, 0)

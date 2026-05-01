@@ -36,24 +36,44 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("ui_cancel"):
+		get_tree().quit()
 	pass
+	
+func fly_score_create_plank():
+	create_plank.emit()
+	increase_score.emit()
 
-func _on_gull_check_position(final_position: Vector3, is_forward: bool):
+func _on_gull_check_position(final_position: Vector3, movement_state: int):
 	var check_tile
-	if !is_forward:
-		check_tile = dock.current_plank[gull.current_position]
-	elif is_forward:
-		check_tile = dock.next_plank[gull.current_position]
+	
+	if movement_state==0:
+		#check_tile = dock.current_plank[gull.current_position]
+		check_tile = dock.plank_arr[6].tile_arr[gull.current_position]
+	elif movement_state==1:
+		#print(dock.current_plank)
+		#print(dock.plank_arr[6].tile_arr)
+		#check_tile = dock.next_plank[gull.current_position]
+		check_tile = dock.plank_arr[7].tile_arr[gull.current_position]
+	elif movement_state==2:
+		check_tile = dock.plank_arr[6+gull.fly_dist].tile_arr[gull.current_position]
+		pass
 	#print(check_tile)
 	if check_tile == config.get_value('tiles','HOLE_TILE'):
 		_trigger_kill_screen()
 	elif check_tile == config.get_value('tiles','FISHERMAN_TILE'):
 		print("blocked")
 		pass
-	elif is_forward:
-		state_machine.set_state('forward')
+	elif movement_state==1:
 		create_plank.emit()
 		increase_score.emit()
+		state_machine.set_state('forward')
+	elif movement_state==2:
+		var tween = get_tree().create_tween().set_loops(gull.fly_dist)
+		tween.tween_callback(
+			fly_score_create_plank
+		).set_delay(1.0/gull.fly_dist)
+		state_machine.set_state("forward")
 	
 	pass # Replace with function body.
 

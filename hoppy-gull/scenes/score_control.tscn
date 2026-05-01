@@ -1,0 +1,156 @@
+[gd_scene load_steps=7 format=3 uid="uid://b7eu2puxdp3gx"]
+
+[ext_resource type="Script" uid="uid://crktnqdxppbti" path="res://kill_screen.gd" id="1_d6h2b"]
+[ext_resource type="Texture2D" uid="uid://biqgo55jnrvvh" path="res://mesh/textures/feather_2.png" id="2_1oemr"]
+
+[sub_resource type="Gradient" id="Gradient_lquwl"]
+offsets = PackedFloat32Array(0, 0.45454547, 0.78099173, 1)
+colors = PackedColorArray(0.9871456, 0.3893037, 0, 1, 1.8289685e-06, 0.69956255, 0.7522667, 1, 2.4065375e-07, 0.36918318, 0.31677598, 1, 1.1431053e-07, 0.22153276, 0.10963806, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7mycd"]
+gradient = SubResource("Gradient_lquwl")
+fill_from = Vector2(1, 0)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="GDScript" id="GDScript_lquwl"]
+script/source = "extends Label
+
+@onready var score = 0
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	text = \"Score: %s\" % score
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+func _on_main_increase_score() -> void:
+	score = score + 1
+	text = \"Score: %s\" % score
+	pass # Replace with function body.
+
+
+func _on_gull_item_pickup(score_increase: int) -> void:
+	score += score_increase
+	text = \"Score: %s\" % score
+	pass # Replace with function body.
+"
+
+[sub_resource type="GDScript" id="GDScript_1oemr"]
+script/source = "extends Control
+
+var feathers: HBoxContainer
+var feather_icon: TextureRect
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	feathers = $feathers_container
+	var feather_texture = load(\"res://mesh/textures/feather_2.png\")
+	feather_icon = TextureRect.new()
+	feather_icon.set_texture(feather_texture)
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+func _on_gull_use_fly_skill() -> void:
+	feathers.get_children()[-1].queue_free()
+	pass # Replace with function body.
+
+
+func _on_gull_feather_pickup() -> void:
+	feathers.add_child(feather_icon.duplicate())
+	pass # Replace with function body.
+"
+
+[node name="score_control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="kill_screen" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = 324.0
+offset_right = 128.0
+offset_bottom = 708.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_7mycd")
+script = ExtResource("1_d6h2b")
+
+[node name="retry_button" type="Button" parent="kill_screen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -74.333
+offset_right = 64.0
+offset_bottom = -43.332825
+grow_horizontal = 2
+grow_vertical = 2
+text = "Retry"
+
+[node name="quit_button" type="Button" parent="kill_screen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = 28.625
+offset_right = 64.0
+offset_bottom = 59.625183
+grow_horizontal = 2
+grow_vertical = 2
+text = "Quit
+"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="score_label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+script = SubResource("GDScript_lquwl")
+
+[node name="feather_ui" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+script = SubResource("GDScript_1oemr")
+
+[node name="feathers_container" type="HBoxContainer" parent="VBoxContainer/feather_ui"]
+layout_mode = 0
+offset_right = 1028.0
+offset_bottom = 512.0
+scale = Vector2(0.12, 0.12)
+
+[node name="feather_textRect" type="TextureRect" parent="VBoxContainer/feather_ui/feathers_container"]
+layout_mode = 2
+texture = ExtResource("2_1oemr")
+
+[node name="feather_textRect2" type="TextureRect" parent="VBoxContainer/feather_ui/feathers_container"]
+layout_mode = 2
+texture = ExtResource("2_1oemr")
+
+[node name="feather_textRect3" type="TextureRect" parent="VBoxContainer/feather_ui/feathers_container"]
+layout_mode = 2
+texture = ExtResource("2_1oemr")

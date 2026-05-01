@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=4 uid="uid://dmr68etageyf"]
+[gd_scene load_steps=6 format=4 uid="uid://dmr68etageyf"]
 
 [ext_resource type="Texture2D" uid="uid://dw4yxkeoa84d6" path="res://mesh/rounded_plank_tile_gr-1.png" id="2_urm3k"]
 
@@ -28,6 +28,9 @@ blend_shape_mode = 0
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_xmeit"]
 points = PackedVector3Array(1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1)
 
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_e8a5f"]
+points = PackedVector3Array(-1, 0.6820279, -1, -1, 0.80369514, -0.97592014, 1, 0.6820279, -1, -1, 0.6820279, 1, -1, 0.9068431, -0.9070086, 1, 0.80369514, -0.97592014, 1, 0.6820279, 1, -1, 0.80369514, 0.97572434, -1, 0.9757848, -0.8038371, 1, 0.9068431, -0.9070086, 1, 0.80369514, 0.97572434, -1, 0.9068431, 0.9068128, -1, 1, -0.68206733, 1, 0.9757848, -0.8038371, 1, 0.9068431, 0.9068128, -1, 0.9757848, 0.8036413, -1, 1, 0.68187153, 1, 1, -0.68206733, 1, 0.9757848, 0.8036413, 1, 1, 0.68187153)
+
 [node name="rounded_plank_tile" type="Node3D"]
 
 [node name="rounded_plank_tile" type="Node3D" parent="."]
@@ -41,5 +44,10 @@ skeleton = NodePath("")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.03130264, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="rounded_plank_tile/rounded_plank_static"]
-transform = Transform3D(0.4, 0, 0, 0, 0.1, 0, 0, 0, 0.4, 0, 0, 0)
+transform = Transform3D(0.4, 0, 0, 0, 0.1, 0, 0, 0, 0.4, 0, 0.13221359, 0)
 shape = SubResource("ConvexPolygonShape3D_xmeit")
+disabled = true
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="rounded_plank_tile/rounded_plank_static"]
+transform = Transform3D(0.4, 0, 0, 0, 0.1, 0, 0, 0, 0.4, 0, 0.03130264, 0)
+shape = SubResource("ConvexPolygonShape3D_e8a5f")

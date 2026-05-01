@@ -9,8 +9,10 @@ var config_tiles
 @onready var railing_1_scene = preload("res://scenes/railing_1.tscn")
 @onready var railing_2_scene = preload("res://scenes/railing_2.tscn")
 @onready var animation_player = $AnimationPlayer
-@onready var rounded_plank_tile_scene = load("res://scenes/rounded_plank_tile.tscn")
+@onready var rounded_plank_tile_scene = load("res://scenes/plank_tile.tscn")
 @onready var fisherman_scene = load("res://scenes/fisherman.tscn")
+@onready var feather_scene = load("res://scenes/feather_2.tscn")
+@onready var plank_object = $plank_object
 
 signal check_char_fell
 signal lure_tile_signal
@@ -18,7 +20,7 @@ signal lure_tile_signal
 func _ready() -> void:
 	config_tiles = config.load("res://config.cfg")
 	build_plank(tile_arr)
-	check_char_fell.connect(get_tree().current_scene.get_node("dock_2").check_if_char_dead.bind())
+	#check_char_fell.connect(get_tree().current_scene.get_node("dock_2").check_if_char_dead.bind())
 	
 	
 	pass # Replace with function body.
@@ -35,6 +37,7 @@ func build_plank(tile_arr):
 	for tile in range(len(tile_arr)):
 		if tile_arr[tile]!=0:
 			var rounded_plank_tile = rounded_plank_tile_scene.instantiate()
+			rounded_plank_tile.set_freeze_enabled(true)
 			get_node("plank_object/tile_{0}".format([tile+1])).add_child(rounded_plank_tile)
 		if tile_arr[tile]==2:
 			var fisherman = fisherman_scene.instantiate()
@@ -42,6 +45,9 @@ func build_plank(tile_arr):
 				fisherman.rotate_y(PI)
 			get_node("plank_object/tile_{0}".format([tile+1])).add_child(fisherman)
 			lure_tile_signal.connect(fisherman._on_lure_tile.bind())
+		if tile_arr[tile]==3:
+			var feather = feather_scene.instantiate()
+			get_node("plank_object/tile_{0}".format([tile+1])).add_child(feather)
 	if railing:
 		get_node("end_tile").add_child(railing_1_scene.instantiate())
 		get_node("end_tile2").add_child(railing_1_scene.instantiate())
@@ -51,7 +57,11 @@ func build_plank(tile_arr):
 
 func _on_plank_fall_timer_timeout() -> void:
 	animation_player.stop()
-	animation_player.play("fall")
+	#animation_player.play("fall")
+	for tile in plank_object.get_children():
+		if tile.get_child(0) != null:
+			tile.get_child(0).freeze = false
+	
 	check_char_fell.emit(self)
 	pass # Replace with function body.
 
