@@ -2,6 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://dyekvhopnxlis" path="res://mesh/bobber_gr-1.png" id="1_2wku4"]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_2wku4"]
+margin = 0.0
+radius = 0.025
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bem1f"]
 resource_name = "Material.001"
 cull_mode = 2
@@ -41,23 +45,12 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_40wi8")
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_rn3pg"]
-size = Vector3(0.025, 0.025, 0.025)
+[node name="bobber" type="AnimatableBody3D"]
+collision_mask = 3
 
-[node name="bobber" type="StaticBody3D"]
-disable_mode = 2
-collision_mask = 2
+[node name="Bobber_col" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_2wku4")
 
-[node name="Sphere" type="MeshInstance3D" parent="."]
+[node name="Sphere" type="MeshInstance3D" parent="Bobber_col"]
 mesh = SubResource("ArrayMesh_u3y0r")
 skeleton = NodePath("")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_rn3pg")
-disabled = true
-
-[node name="bobber_area3d" type="Area3D" parent="."]
-collision_mask = 2
-
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="bobber_area3d"]
-shape = SubResource("BoxShape3D_rn3pg")

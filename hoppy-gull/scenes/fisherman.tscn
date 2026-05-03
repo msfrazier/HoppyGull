@@ -39,6 +39,28 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector3(0.0044281688, -0.05127682, -0.46894437), Vector3(-0.046618093, 0.021817457, -2.5637348)]
 }
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("fisherman/bobber:position:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(2, 0, 2),
+"points": PackedFloat32Array(-15.769033, -0.25, 0, 0.25, 0, -0.049170494, -0.01666667, -0.66666675, 0.06666666, 2.6666665, 4.2309666, -0.083333336, -3.3333335, 0, 0),
+"times": PackedFloat32Array(0, 0.36666667, 0.5)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("fisherman/bobber:position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(2, 0, 2),
+"points": PackedFloat32Array(-14.170811, -0.25, 0, 0.25, 0, 12.084836, -0.01666667, -0.48409408, 0.06666666, 1.936376, 0.3520097, -0.083333336, -2.4204702, 0, 0),
+"times": PackedFloat32Array(0, 0.36666667, 0.5)
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_n3ju8"]
 _data = {
@@ -53,7 +75,7 @@ script = ExtResource("1_7xu1q")
 [node name="fisherman" parent="." instance=ExtResource("1_do6aj")]
 
 [node name="arms" parent="fisherman" index="1"]
-transform = Transform3D(0.44984663, 0.021690732, -0.0024642323, -0.22818111, 0.042888194, -0.00021290108, 0.022075182, 0.0013033749, 0.048015304, -0.0049918517, 1.0030805, 0.48696595)
+transform = Transform3D(0.44984663, 0.021690732, -0.0024642334, -0.22818111, 0.042888194, -0.00021290118, 0.022075182, 0.0013033749, 0.048015326, -0.0049918517, 1.0030805, 0.48696595)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="fisherman"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90000004, 0)
@@ -70,7 +92,8 @@ transform = Transform3D(-0.86562747, 0.026186667, 0.49999848, 0.030237688, 0.999
 visible = false
 
 [node name="bobber" parent="fisherman" instance=ExtResource("4_bkc22")]
-transform = Transform3D(5.17, 0, 0, 0, 5.17, 0, 0, 0, 5.17, -15.769033, -14.170811, 0)
+transform = Transform3D(5.17, 0, 0, 0, 5.1700044, 0, 0, 0, 5.17, -15.769033, -14.170811, 0)
+sync_to_physics = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -78,9 +101,10 @@ libraries = {
 }
 
 [node name="cast_timer" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 3.0
 autostart = true
 
 [connection signal="timeout" from="cast_timer" to="." method="_on_cast_timer_timeout"]
 
 [editable path="fisherman"]
+[editable path="fisherman/bobber"]

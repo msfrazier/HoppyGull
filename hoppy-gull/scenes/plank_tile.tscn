@@ -70,6 +70,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_dygdd")
 
 [node name="plank" type="RigidBody3D"]
+collision_mask = 2
 gravity_scale = 0.5
 script = SubResource("GDScript_naffu")
 

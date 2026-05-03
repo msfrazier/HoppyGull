@@ -23,13 +23,14 @@ func _on_ripple_completed():
 	print(\"done\")
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
-	print(\"entered: \", body)
+	print(\"entered: \", body, \"body position: \", body.position, \"body global position: \", body.global_position)
 	var splash: CPUParticles3D = splash_CPU.instantiate()
 	var ripple: Decal = ripple_decal.instantiate()
 	splash.global_position = body.position
 	splash.emitting = true
-	ripple.position.x = body.global_position.x
-	ripple.position.z = body.global_position.z
+	ripple.position.x = body.global_position.x-self.global_position.x
+	ripple.position.z = body.global_position.z-self.global_position.z
+	
 	
 	self.add_child(splash)
 	self.add_child(ripple)
@@ -38,7 +39,6 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 	ripple.queue_free()
 	
 	await splash.finished
-	print(\"splash_finished\")
 	splash.queue_free()
 	
 	pass # Replace with function body.
@@ -60,7 +60,6 @@ func _on_area_3d_area_entered(area: Area3D) -> void:
 	ripple.queue_free()
 	
 	await splash.finished
-	print(\"splash_finished\")
 	splash.queue_free()
 	
 	pass # Replace with function body.
@@ -95,8 +94,8 @@ subdivide_depth = 500
 [sub_resource type="QuadMesh" id="QuadMesh_fiuhb"]
 size = Vector2(0.1, 0.1)
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_mn261"]
-points = PackedVector3Array(-63.99997, 0, -63.99997, -63.99997, 0, 63.999992, 64, 0, -63.99997, 64, 0, 63.999992)
+[sub_resource type="BoxShape3D" id="BoxShape3D_fiuhb"]
+size = Vector3(128, 1, 128)
 
 [node name="ocean" type="Node3D"]
 script = SubResource("GDScript_mn261")
@@ -120,10 +119,10 @@ draw_pass_1 = SubResource("QuadMesh_fiuhb")
 visible = false
 
 [node name="Area3D" type="Area3D" parent="."]
-collision_mask = 2
+collision_mask = 3
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="Area3D"]
-shape = SubResource("ConvexPolygonShape3D_mn261")
+shape = SubResource("BoxShape3D_fiuhb")
 
 [connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

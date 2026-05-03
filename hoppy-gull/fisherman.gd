@@ -10,6 +10,7 @@ extends Node3D
 @onready var above_head: Marker3D = $fisherman/above_head
 
 @onready var t = 0.0
+@onready var bobber_tween_time = 1
 #@onready var soft_lure_pos = soft_lure.global_position
 @onready var bobber_pos = bobber.global_position
 var lure_tile: Vector3
@@ -56,7 +57,9 @@ func _on_lure_tile(lure_tile_pos: Vector3) -> void:
 			bobber_pos,
 			above_head.global_position,
 			lure_tile,
-		), 0.0, 1.0, 1
+		), 0.0, 
+		1.0, 
+		bobber_tween_time
 	)
 	tween.tween_property(
 		bobber,
@@ -66,7 +69,7 @@ func _on_lure_tile(lure_tile_pos: Vector3) -> void:
 			randf_range(-2*PI,2*PI),
 			randf_range(-2*PI,2*PI)
 		),
-		1
+		bobber_tween_time
 	)
 	
 	pass 
@@ -78,7 +81,7 @@ func _cast_out() -> void:
 			bobber.global_position,
 			above_head.global_position,
 			bobber_pos,
-		), 0.0, 1.0, 1
+		), 0.0, 1.0, bobber_tween_time
 	)
 	tween.tween_property(
 		bobber,
@@ -88,6 +91,6 @@ func _cast_out() -> void:
 			randf_range(-2*PI,2*PI),
 			randf_range(-2*PI,2*PI)
 		),
-		1
+		bobber_tween_time
 	)
 	pass

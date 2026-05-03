@@ -85,14 +85,13 @@ func _on_main_create_plank() -> void:
 func _on_plank_wobble_timer_timeout() -> void:
 	var wobble_plank = plank_arr[-1*(first_plank_pos)]
 	wobble_plank.get_node(\"AnimationPlayer\").play(\"wobble\")
-	wobble_plank.get_node(\"plank_fall_timer\").start(1)
+	wobble_plank.get_node(\"plank_fall_timer\").start(3)
 	
 	pass # Replace with function body.
 
 
 func check_if_char_dead(checking_plank) -> void:
 	if checking_plank == plank_arr[6]:
-		print(\"Checking Plank: \", checking_plank)
 		death_signal.emit()
 	pass # Replace with function body.
 "

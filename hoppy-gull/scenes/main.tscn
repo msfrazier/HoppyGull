@@ -1,12 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://bc1vcnnjwo5be"]
+[gd_scene load_steps=9 format=3 uid="uid://bc1vcnnjwo5be"]
 
 [ext_resource type="Script" uid="uid://ck58xg1mvjsfn" path="res://main.gd" id="1_tefeu"]
 [ext_resource type="PackedScene" uid="uid://dj12r64mw1xl1" path="res://state_machine.tscn" id="2_o6xl0"]
-[ext_resource type="PackedScene" uid="uid://b7i6pr8saj2py" path="res://gull.tscn" id="3_tipki"]
-[ext_resource type="PackedScene" uid="uid://b7fs5jfjy0n50" path="res://scenes/ocean.tscn" id="4_tefeu"]
 [ext_resource type="PackedScene" uid="uid://b7eu2puxdp3gx" path="res://scenes/score_control.tscn" id="5_tefeu"]
+[ext_resource type="PackedScene" uid="uid://b7i6pr8saj2py" path="res://scenes/gull.tscn" id="6_tefeu"]
 [ext_resource type="PackedScene" uid="uid://c1bdtga7ncdtx" path="res://dock_2.tscn" id="6_ya4ey"]
-[ext_resource type="PackedScene" uid="uid://dphnd3ko80tru" path="res://scenes/feather_2.tscn" id="8_85g3d"]
+[ext_resource type="PackedScene" uid="uid://b7fs5jfjy0n50" path="res://scenes/ocean.tscn" id="7_o6xl0"]
 
 [sub_resource type="Environment" id="Environment_kek77"]
 background_color = Color(1, 1, 1, 1)
@@ -69,11 +68,7 @@ wait_time = 3.0
 one_shot = true
 script = SubResource("GDScript_kek77")
 
-[node name="feather2" parent="." instance=ExtResource("8_85g3d")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.6, 0.6, 1.5)
-visible = false
-
-[node name="gull" parent="." instance=ExtResource("3_tipki")]
+[node name="gull" parent="." instance=ExtResource("6_tefeu")]
 
 [node name="camera" type="Camera3D" parent="gull"]
 transform = Transform3D(-1, -4.7731522e-08, 7.324236e-08, 4.5598885e-08, 0.43002275, 0.902818, -7.458876e-08, 0.902818, -0.43002275, 0, 3.0603213, -1.2919896)
@@ -85,11 +80,8 @@ transform = Transform3D(-1, -4.7731515e-08, 7.3242354e-08, 0, 0.83779496, 0.5459
 [node name="camera3" type="Camera3D" parent="gull"]
 transform = Transform3D(-1, -4.7731522e-08, 7.324236e-08, -1.646232e-08, 0.9256198, 0.37845477, -8.58588e-08, 0.37845477, -0.9256198, 0, 2.6875186, -1.8547182)
 
-[node name="ocean" parent="gull" instance=ExtResource("4_tefeu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05934453, -4.688082, -0.007501006)
-
-[node name="ocean_mesh" parent="gull/ocean" index="0"]
-skeleton = NodePath("")
+[node name="ocean" parent="gull" instance=ExtResource("7_o6xl0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.688, 0)
 
 [connection signal="create_plank" from="." to="dock_2" method="_on_main_create_plank"]
 [connection signal="increase_score" from="." to="score_control/VBoxContainer/score_label" method="_on_main_increase_score"]
@@ -100,7 +92,11 @@ skeleton = NodePath("")
 [connection signal="pressed" from="score_control/kill_screen/quit_button" to="." method="_on_quit_button_button_down"]
 [connection signal="death_signal" from="dock_2" to="." method="_trigger_kill_screen"]
 [connection signal="timeout" from="plank_wobble_timer" to="dock_2" method="_on_plank_wobble_timer_timeout"]
+[connection signal="check_position" from="gull" to="." method="_on_gull_check_position"]
+[connection signal="feather_pickup" from="gull" to="score_control/VBoxContainer/feather_ui" method="_on_gull_feather_pickup"]
+[connection signal="item_pickup" from="gull" to="score_control/VBoxContainer/score_label" method="_on_gull_item_pickup"]
+[connection signal="trigger_kill_screen" from="gull" to="." method="_trigger_kill_screen"]
+[connection signal="use_fly_skill" from="gull" to="score_control/VBoxContainer/feather_ui" method="_on_gull_use_fly_skill"]
 
 [editable path="state_machine"]
 [editable path="score_control"]
-[editable path="gull/ocean"]

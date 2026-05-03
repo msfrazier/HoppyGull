@@ -10,7 +10,7 @@ var config_tiles
 @onready var railing_2_scene = preload("res://scenes/railing_2.tscn")
 @onready var animation_player = $AnimationPlayer
 @onready var rounded_plank_tile_scene = load("res://scenes/plank_tile.tscn")
-@onready var fisherman_scene = load("res://scenes/fisherman.tscn")
+@onready var fisherman_scene = preload("res://scenes/fisherman.tscn")
 @onready var feather_scene = load("res://scenes/feather_2.tscn")
 @onready var plank_object = $plank_object
 
@@ -20,7 +20,7 @@ signal lure_tile_signal
 func _ready() -> void:
 	config_tiles = config.load("res://config.cfg")
 	build_plank(tile_arr)
-	#check_char_fell.connect(get_tree().current_scene.get_node("dock_2").check_if_char_dead.bind())
+	check_char_fell.connect(get_tree().current_scene.get_node("dock_2").check_if_char_dead.bind())
 	
 	
 	pass # Replace with function body.

@@ -1,12 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://ce6on0dc1jgp1"]
+[gd_scene load_steps=16 format=3 uid="uid://b7i6pr8saj2py"]
+
+[ext_resource type="Texture2D" uid="uid://ubppgk7e2yqi" path="res://mesh/textures/dust cloud.png" id="1_2sgct"]
 
 [sub_resource type="GDScript" id="GDScript_wbb4c"]
 script/source = "extends CharacterBody3D
 
-
 const SPEED = 4
-
+const fly_dist = 8
+#current_pposition is which tile on a plank (0-6) the
+#character is on
 @onready var current_position : int = 3
+@onready var max_height: float = 1
+@onready var flying: bool = false
+@onready var animation_player = $AnimationPlayer
+@onready var dust_clouds = $dust_cloud_gpu_particles
+
+@export var fly_num : int = 3
+
 var final_position : Vector3
 var movement_dist : float
 var movement_time: float
@@ -16,6 +26,9 @@ var movement_time: float
 
 signal check_position
 signal trigger_kill_screen
+signal use_fly_skill
+signal feather_pickup
+signal item_pickup
 
 func _ready() -> void:
 	final_position = position
@@ -29,16 +42,21 @@ func _physics_process(delta: float) -> void:
 		movement_time += delta
 		move_and_slide()
 	else:
-		velocity = Vector3.ZERO
+		velocity.x = 0
+		velocity.z = 0
+
 	if velocity == Vector3.ZERO and \\
 	(state_machine.current_state.name == 'moving' or \\
 	state_machine.current_state.name == 'forward'):
+		#print(movement_time)
 		movement_time = 0.0
 		state_machine.set_state(\"alive\")
+
 	pass
 		
 		
 func _process(delta: float) -> void:
+	
 	if Input.is_action_just_pressed(\"ui_left\") and velocity.is_zero_approx() \\
 	and state_machine.current_state.name == \"alive\"\\
 	and current_position > 0:
@@ -47,7 +65,8 @@ func _process(delta: float) -> void:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
 		current_position -= 1
-		check_position.emit(final_position, false)
+		check_position.emit(final_position, 0)
+		
 	elif Input.is_action_just_pressed(\"ui_right\") and velocity.is_zero_approx()\\
 	and state_machine.current_state.name == \"alive\"\\
 	and current_position < 6:
@@ -56,7 +75,8 @@ func _process(delta: float) -> void:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
 		current_position += 1
-		check_position.emit(final_position, false)
+		check_position.emit(final_position, 0)
+		
 	elif (Input.is_action_just_pressed(\"ui_up\"))\\
 	 and velocity.is_zero_approx()\\
 	and state_machine.current_state.name == \"alive\":
@@ -64,7 +84,20 @@ func _process(delta: float) -> void:
 		var direction := (transform.basis * Vector3(0,0,1)).normalized()
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
-		check_position.emit(final_position, true)
+		check_position.emit(final_position, 1)
+		
+	elif (Input.is_action_just_pressed(\"fly\"))\\
+	and velocity.is_zero_approx()\\
+	and state_machine.current_state.name == \"alive\"\\
+	and self.fly_num > 0:
+		final_position = (position + Vector3(0,0,movement_dist*fly_dist)).snappedf(0.1)
+		var direction := (transform.basis * Vector3(0,0,1)).normalized()
+		velocity.x = direction.x * SPEED
+		velocity.z = direction.z * SPEED
+		animation_player.play(\"fly\")
+		check_position.emit(final_position, 2)
+		fly_num -= 1
+		use_fly_skill.emit()
 		
 func check_if_dead(checking_plank):
 	print(checking_plank)
@@ -72,7 +105,15 @@ func check_if_dead(checking_plank):
 
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
-	print(body)
+	#print(\"body \", body.name)
+	match body.name:
+		\"feather\":
+			if fly_num < 3:
+				fly_num += 1
+				feather_pickup.emit()
+			else:
+				item_pickup.emit(10)
+			body.queue_free()
 	pass # Replace with function body.
 
 
@@ -80,17 +121,105 @@ func _on_area_3d_area_entered(area: Area3D) -> void:
 	print(area)
 	trigger_kill_screen.emit()
 	pass # Replace with function body.
+	
+func _emit_dust_clouds():
+	dust_clouds.emitting = true
 "
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_wbb4c"]
-margin = 0.0
-height = 0.001
-radius = 0.1
+height = 0.5
+radius = 0.2
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_2sgct"]
 top_radius = 0.2
 bottom_radius = 0.2
 height = 0.5
+
+[sub_resource type="Animation" id="Animation_2sgct"]
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.25, 0)
+
+[sub_resource type="Animation" id="Animation_wbb4c"]
+resource_name = "fly"
+length = 0.8
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.25, 0, 0.333, 1, 0, 1.75, 0, 0.8, 1, 0, 0.25, 0)
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"values": []
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2sgct"]
+_data = {
+&"RESET": SubResource("Animation_2sgct"),
+&"fly": SubResource("Animation_wbb4c")
+}
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cy0yb"]
+transparency = 1
+blend_mode = 1
+diffuse_mode = 3
+specular_mode = 1
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_2sgct")
+billboard_mode = 1
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_q44gv"]
+material = SubResource("StandardMaterial3D_cy0yb")
+size = Vector2(0.5, 0.5)
+orientation = 2
+
+[sub_resource type="Gradient" id="Gradient_2sgct"]
+colors = PackedColorArray(0.7882353, 0.7882353, 0.7882353, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_cy0yb"]
+offsets = PackedFloat32Array(0.04040404, 1)
+colors = PackedColorArray(0.7882353, 0.7882353, 0.7882353, 1, 0.79, 0.79, 0.79, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_q44gv"]
+gradient = SubResource("Gradient_cy0yb")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2sgct"]
+lifetime_randomness = 1.0
+direction = Vector3(0, 0, 0)
+spread = 180.0
+flatness = 1.0
+radial_velocity_min = -2.2351742e-05
+radial_velocity_max = 31.999977
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -2.2351742e-06
+radial_accel_max = 3.9999976
+color_ramp = SubResource("GradientTexture1D_q44gv")
+turbulence_noise_strength = 20.0
+turbulence_noise_scale = 10.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2sgct"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_2sgct")
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_cy0yb"]
+material = SubResource("StandardMaterial3D_2sgct")
+size = Vector2(0.5, 0.5)
 
 [node name="gull" type="CharacterBody3D"]
 script = SubResource("GDScript_wbb4c")
@@ -98,11 +227,50 @@ script = SubResource("GDScript_wbb4c")
 [node name="Area3D" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 shape = SubResource("CylinderShape3D_wbb4c")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.24987502, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 mesh = SubResource("CylinderMesh_2sgct")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_2sgct")
+}
+
+[node name="dust_cloud_cpu_particles" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+visible = false
+emitting = false
+lifetime = 0.5
+explosiveness = 1.0
+randomness = 1.0
+lifetime_randomness = 1.0
+local_coords = true
+mesh = SubResource("PlaneMesh_q44gv")
+particle_flag_disable_z = true
+direction = Vector3(0, 1, 0)
+spread = 180.0
+flatness = 1.0
+gravity = Vector3(0, 0, 0)
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+orbit_velocity_curve = null
+radial_accel_max = 78.32
+color_ramp = SubResource("Gradient_2sgct")
+
+[node name="dust_cloud_gpu_particles" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+visible = false
+emitting = false
+amount = 64
+lifetime = 0.67
+one_shot = true
+explosiveness = 1.0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_2sgct")
+draw_pass_1 = SubResource("QuadMesh_cy0yb")
 
 [connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
