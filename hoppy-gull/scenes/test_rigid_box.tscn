@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://bi5mnwe0xq3eh"]
+
+[node name="test_rigid_box" type="RigidBody3D"]
+transform = Transform3D(7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, -0.2, 0.05, -0.525)

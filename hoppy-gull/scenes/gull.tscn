@@ -14,6 +14,9 @@ const fly_dist = 8
 @onready var flying: bool = false
 @onready var animation_player = $AnimationPlayer
 @onready var dust_clouds = $dust_cloud_gpu_particles
+@onready var forward_ray = $forward_ray
+@onready var left_ray = $left_ray
+@onready var right_ray = $right_ray
 
 @export var fly_num : int = 3
 
@@ -59,7 +62,8 @@ func _process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed(\"ui_left\") and velocity.is_zero_approx() \\
 	and state_machine.current_state.name == \"alive\"\\
-	and current_position > 0:
+	and current_position > 0\\
+	and !left_ray.is_colliding():
 		final_position = (position + Vector3(movement_dist,0,0)).snappedf(0.1)
 		var direction := (transform.basis * Vector3(1,0,0)).normalized()
 		velocity.x = direction.x * SPEED
@@ -69,7 +73,8 @@ func _process(delta: float) -> void:
 		
 	elif Input.is_action_just_pressed(\"ui_right\") and velocity.is_zero_approx()\\
 	and state_machine.current_state.name == \"alive\"\\
-	and current_position < 6:
+	and current_position < 6\\
+	and !right_ray.is_colliding():
 		final_position = (position + Vector3(-movement_dist,0,0)).snappedf(0.1)
 		var direction := (transform.basis * Vector3(-1,0,0)).normalized()
 		velocity.x = direction.x * SPEED
@@ -79,7 +84,8 @@ func _process(delta: float) -> void:
 		
 	elif (Input.is_action_just_pressed(\"ui_up\"))\\
 	 and velocity.is_zero_approx()\\
-	and state_machine.current_state.name == \"alive\":
+	and state_machine.current_state.name == \"alive\"\\
+	and !forward_ray.is_colliding():
 		final_position = (position + Vector3(0,0,movement_dist)).snappedf(0.1)
 		var direction := (transform.basis * Vector3(0,0,1)).normalized()
 		velocity.x = direction.x * SPEED
@@ -271,6 +277,18 @@ explosiveness = 1.0
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_2sgct")
 draw_pass_1 = SubResource("QuadMesh_cy0yb")
+
+[node name="forward_ray" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+target_position = Vector3(0, 0, 0.4)
+
+[node name="left_ray" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+target_position = Vector3(0.4, 0, 0)
+
+[node name="right_ray" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+target_position = Vector3(-0.4, 0, 0)
 
 [connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

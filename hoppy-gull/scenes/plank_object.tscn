@@ -1,8 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://cmjhacx4w5v5m"]
+[gd_scene load_steps=10 format=3 uid="uid://cmjhacx4w5v5m"]
 
 [ext_resource type="Script" uid="uid://b4hdygwhcl75k" path="res://plank_object.gd" id="1_3wd3n"]
 [ext_resource type="PackedScene" uid="uid://b6q1sjbjx3s17" path="res://mesh/end_plank.glb" id="2_3wd3n"]
 [ext_resource type="PackedScene" uid="uid://bcf3uqsef1jw4" path="res://scenes/plank_tile.tscn" id="3_gjmua"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gjmua"]
+size = Vector3(3.6000001, 0.1, 0.4)
 
 [sub_resource type="Animation" id="Animation_vd2kw"]
 length = 0.001
@@ -80,7 +83,9 @@ func _on_plank_wobble_timer_timeout() -> void:
 [node name="animated_plank" type="Node3D"]
 script = ExtResource("1_3wd3n")
 
-[node name="plank_object" type="Node3D" parent="."]
+[node name="plank_object" type="StaticBody3D" parent="."]
+collision_layer = 4
+collision_mask = 4
 
 [node name="tile_1" type="Marker3D" parent="plank_object"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, 0)
@@ -101,6 +106,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
 
 [node name="tile_7" type="Marker3D" parent="plank_object"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0, 0)
+
+[node name="plank_object_col" type="CollisionShape3D" parent="plank_object"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7881393e-07, -0.00075908005, 1.4901161e-08)
+shape = SubResource("BoxShape3D_gjmua")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../plank_object")

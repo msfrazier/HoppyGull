@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://p6ge1umxmba0"
-path.s3tc="res://.godot/imported/gr-1.png-d6953875504766133bf5d1320bcbdb4f.s3tc.ctex"
+uid="uid://ck80hw5uducmx"
+path.s3tc="res://.godot/imported/bench_2_gr-1.png-0a9b5c97ad64a18f8159859e1a88d902.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "3df643ffdb7227a9f55607460db260f5"
+}
 
 [deps]
 
-source_file="res://mesh/textures/gr-1.png"
-dest_files=["res://.godot/imported/gr-1.png-d6953875504766133bf5d1320bcbdb4f.s3tc.ctex"]
+source_file="res://mesh/bench_2_gr-1.png"
+dest_files=["res://.godot/imported/bench_2_gr-1.png-0a9b5c97ad64a18f8159859e1a88d902.s3tc.ctex"]
 
 [params]
 

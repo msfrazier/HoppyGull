@@ -9,14 +9,37 @@ var config_tiles
 @onready var plank_arr: Array
 @onready var first_plank_pos = -6
 @onready var last_plank_pos = 25
+@onready var tile_width  = 0.4
+@onready var hole_tile_percentage = 0.85
 
 @onready var plank = preload(\"res://scenes/plank_object.tscn\")
 @onready var railing = preload(\"res://scenes/railing.tscn\")
-@onready var tile_width  = 0.4
+@onready var fisherman_scene = load(\"res://scenes/fisherman.tscn\")
+@onready var bench_scene = load(\"res://scenes/bench.tscn\")
 @onready var add_railing = true
+@onready var needed_tiles: Dictionary = {
+	\"0\":0,
+	\"1\":0,
+	\"2\":0,
+	\"3\":0,
+	\"4\":0,
+	\"5\":0,
+	\"6\":0
+}
 
-@onready var fisherman_tile_delay = ((randi() % 99) + 10) * 7
-@onready var feather_delay: int = ((randi() % 259) + 140) * 7
+@onready var plank_build_dict : Dictionary = {
+	\"fisherman\": ((randi() % 89) + 10),
+	\"feather\" : ((randi() % 259) + 140),
+	\"bench_left\" : ((randi() % 9) + 10),
+	\"bench_right\" : ((randi() % 9) + 10),
+}
+
+##Tile Delay
+#@onready var fisherman_tile_delay = ((randi() % 99) + 10) * 7
+##Powerup Delay
+#@onready var feather_delay: int = ((randi() % 259) + 140) * 7
+##Decoration Delay
+#@onready var bench_delay: int = ((randi() % 29) + 10) * 7
 
 signal death_signal
 
@@ -28,7 +51,7 @@ func _ready() -> void:
 	var railing_inst = railing.instantiate()
 	for i in planks_arr_z:
 		var plank_inst = plank.instantiate()
-		plank_inst.tile_arr = [2,1,1,1,1,1,1]
+		plank_inst.tile_arr = [1,1,1,1,1,1,1]
 		plank_inst.position.z = i * tile_width
 		plank_inst.railing = add_railing
 		add_railing = !add_railing
@@ -42,6 +65,12 @@ func _ready() -> void:
 		#print(i.tile_arr)
 	pass # Replace with function body.
 
+#Random number generation: nd(d) + x
+func _random_decoration_num(n:int,d:int,x:int):
+	var ret: int = 0
+	for i in range(n):
+		ret += randi_range(1,d)
+	return ret+x
 
 func _on_main_create_plank() -> void:
 
@@ -50,30 +79,49 @@ func _on_main_create_plank() -> void:
 	var new_plank = Array()
 	for plank_tile in range(7):
 		var random_board = randf()
-		#Create FISHERMAN obstacle
-		if (plank_tile == 0 or plank_tile == 6) and fisherman_tile_delay <= 0:
-			new_plank.append(config.get_value('tiles','FISHERMAN_TILE'))
-			fisherman_tile_delay = ((randi() % 99) + 10) * 7
-		elif feather_delay <= 0:
-			new_plank.append(3)
-			
-			feather_delay = 27
 		#Empty Safe Space
-		elif random_board<=0.85:
+		if random_board<=hole_tile_percentage:
 			new_plank.append(config.get_value('tiles','EMPTY_TILE'))
 		#Hole
 		else:
 			new_plank.append(config.get_value('tiles','HOLE_TILE'))
-		
-		#Hazard tile subtraction
-		fisherman_tile_delay -= 1
-		feather_delay -= 1
-		
+		#fisherman_tile_delay -= 1
+		#feather_delay -= 1
+	if plank_build_dict[\"bench_left\"] <= 2:
+		new_plank[0] = 1
+		new_plank[1] = 1
+	if plank_build_dict[\"bench_right\"] <= 2:
+		new_plank[5] = 1
+		new_plank[6] = 1
 	var plank_inst = plank.instantiate()
 	plank_inst.tile_arr = new_plank
 	plank_inst.position.z = (last_plank_pos) * tile_width
 	plank_inst.railing = add_railing
 	add_railing = !add_railing
+	
+	#Details
+	for plank_detail in plank_build_dict.keys().filter(func(key): return plank_build_dict[key]==0):
+			match plank_detail:
+				\"fisherman\":
+					var r_int = randi_range(0,1)
+					plank_inst.tile_arr[r_int*6] = 1
+					plank_inst.add_fisherman(r_int, fisherman_scene)
+					plank_build_dict['fisherman'] = _random_decoration_num(4,40,20)
+				\"bench_left\":
+					plank_inst.tile_arr[(0*5)+1] = 1
+					plank_inst.add_bench(0, bench_scene)
+					plank_build_dict['bench_left'] = _random_decoration_num(4,40,20)
+				\"bench_right\":
+					plank_inst.tile_arr[(1*5)+1] = 1
+					plank_inst.add_bench(1, bench_scene)
+					plank_build_dict['bench_right'] = _random_decoration_num(4,40,20)
+				\"feather\":
+					pass
+		
+		#Hazard tile subtraction
+	for key in plank_build_dict:
+		plank_build_dict[key] -= 1
+	
 	add_child(plank_inst)
 	#current_plank = plank_arr[6].tile_arr
 	#next_plank = plank_arr[7].tile_arr

@@ -75,7 +75,7 @@ script = ExtResource("1_7xu1q")
 [node name="fisherman" parent="." instance=ExtResource("1_do6aj")]
 
 [node name="arms" parent="fisherman" index="1"]
-transform = Transform3D(0.44984663, 0.021690732, -0.0024642334, -0.22818111, 0.042888194, -0.00021290118, 0.022075182, 0.0013033749, 0.048015326, -0.0049918517, 1.0030805, 0.48696595)
+transform = Transform3D(0.44984663, 0.021690732, -0.0024642337, -0.22818111, 0.042888194, -0.0002129012, 0.022075182, 0.0013033749, 0.04801533, -0.0049918517, 1.0030805, 0.48696595)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="fisherman"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90000004, 0)
@@ -83,6 +83,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90000004, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="fisherman/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05000007, 0)
 shape = SubResource("CapsuleShape3D_7xu1q")
+debug_color = Color(0.9892966, 0, 0.2975148, 0.41960785)
 
 [node name="above_head" type="Marker3D" parent="fisherman"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 0)

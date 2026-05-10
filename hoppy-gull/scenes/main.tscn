@@ -40,6 +40,7 @@ func _on_moving_plank_wobble_timer_stop() -> void:
 
 [node name="main" type="Node3D"]
 script = ExtResource("1_tefeu")
+god_mode = true
 
 [node name="state_machine" parent="." instance=ExtResource("2_o6xl0")]
 

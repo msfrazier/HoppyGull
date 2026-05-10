@@ -50,6 +50,8 @@ func _on_cast_timer_timeout() -> void:
 	pass
 
 func _on_lure_tile(lure_tile_pos: Vector3) -> void:
+	print(self.global_position)
+	print(lure_tile_pos)
 	lure_tile = lure_tile_pos
 	var tween = get_tree().create_tween().set_parallel()
 	tween.tween_method(

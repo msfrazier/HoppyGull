@@ -23,10 +23,50 @@ func _on_ripple_completed():
 	print(\"done\")
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
-	print(\"entered: \", body, \"body position: \", body.position, \"body global position: \", body.global_position)
+	#print(\"entered: \", body, \"body position: \", body.position, \"body global position: \", body.global_position)
+	#var splash: CPUParticles3D = splash_CPU.instantiate()
+	#var ripple: Decal = ripple_decal.instantiate()
+	#splash.global_position = body.global_position - self.global_position
+#
+	#splash.emitting = true
+	#ripple.position.x = body.global_position.x-self.global_position.x
+	#ripple.position.z = body.global_position.z-self.global_position.z
+	#
+	#
+	#self.add_child(splash)
+	#self.add_child(ripple)
+	#
+	#await ripple.tween_finished
+	#ripple.queue_free()
+	#
+	#await splash.finished
+	#splash.queue_free()
+	
+	pass # Replace with function body.
+
+
+
+func _on_area_3d_body_shape_entered(body_rid: RID, body: Node3D, body_shape_index: int, local_shape_index: int) -> void:
+	var body_shape_owner = body.shape_find_owner(body_shape_index)
+	var body_shape_node = body.shape_owner_get_owner(body_shape_owner)
+	var body_shape_node_shape = body_shape_node.get_shape()
+	
+	#print(\"body_rid: \", body_rid, 
+	#\"\\nget_id(body_rid): \", body_rid.get_id(),
+	#\"\\nbody_shape_owner: \", body_shape_owner,
+	#\"\\nbody_shape_node: \", body_shape_node,
+	#\"\\nbody_shape_node_shape: \", body_shape_node_shape,
+	#\"\\nbody_shape_node_shape class: \", body_shape_node_shape.get_class(),
+	#\"\\nbody: \", body, 
+	#\"\\nbody_shape_index: \", body_shape_index, 
+	#\"\\nlocal_shape_index: \", local_shape_index)
+	
 	var splash: CPUParticles3D = splash_CPU.instantiate()
 	var ripple: Decal = ripple_decal.instantiate()
-	splash.global_position = body.position
+	splash.global_position = body.global_position - self.global_position
+	match body_shape_node_shape.get_class():
+		\"BoxShape3D\":
+			pass
 	splash.emitting = true
 	ripple.position.x = body.global_position.x-self.global_position.x
 	ripple.position.z = body.global_position.z-self.global_position.z
@@ -40,29 +80,6 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 	
 	await splash.finished
 	splash.queue_free()
-	
-	pass # Replace with function body.
-
-
-func _on_area_3d_area_entered(area: Area3D) -> void:
-	print(\"entered: \", area)
-	var splash: CPUParticles3D = splash_CPU.instantiate()
-	var ripple: Decal = ripple_decal.instantiate()
-	splash.global_position = area.position
-	splash.emitting = true
-	ripple.position.x = area.global_position.x
-	ripple.position.z = area.global_position.z
-	
-	self.add_child(splash)
-	self.add_child(ripple)
-	
-	await ripple.tween_finished
-	ripple.queue_free()
-	
-	await splash.finished
-	splash.queue_free()
-	
-	pass # Replace with function body.
 	pass # Replace with function body.
 "
 
@@ -119,10 +136,11 @@ draw_pass_1 = SubResource("QuadMesh_fiuhb")
 visible = false
 
 [node name="Area3D" type="Area3D" parent="."]
-collision_mask = 3
+collision_mask = 7
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("BoxShape3D_fiuhb")
 
 [connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_shape_entered" from="Area3D" to="." method="_on_area_3d_body_shape_entered"]

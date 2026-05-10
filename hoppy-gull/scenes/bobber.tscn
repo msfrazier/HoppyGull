@@ -1,6 +1,19 @@
-[gd_scene load_steps=6 format=4 uid="uid://drq32mmcx6mkr"]
+[gd_scene load_steps=7 format=4 uid="uid://drq32mmcx6mkr"]
 
 [ext_resource type="Texture2D" uid="uid://dyekvhopnxlis" path="res://mesh/bobber_gr-1.png" id="1_2wku4"]
+
+[sub_resource type="GDScript" id="GDScript_2wku4"]
+script/source = "extends AnimatableBody3D
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_2wku4"]
 margin = 0.0
@@ -47,6 +60,7 @@ shadow_mesh = SubResource("ArrayMesh_40wi8")
 
 [node name="bobber" type="AnimatableBody3D"]
 collision_mask = 3
+script = SubResource("GDScript_2wku4")
 
 [node name="Bobber_col" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_2wku4")
