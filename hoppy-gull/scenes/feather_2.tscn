@@ -61,7 +61,9 @@ shadow_mesh = SubResource("ArrayMesh_wfs0q")
 [sub_resource type="BoxShape3D" id="BoxShape3D_1k2b8"]
 
 [node name="feather" type="StaticBody3D"]
-transform = Transform3D(0.365, 0, 0, 0, 0.365, 0, 0, 0, 0.365, 0, 0.409684, 0)
+transform = Transform3D(0.225, 0, 0, 0, 0.225, 0, 0, 0, 0.225, 0, 0.245, 0)
+collision_layer = 8
+collision_mask = 15
 script = SubResource("GDScript_c4hr7")
 
 [node name="NurbsPath" type="MeshInstance3D" parent="."]

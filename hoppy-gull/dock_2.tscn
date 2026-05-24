@@ -16,6 +16,7 @@ var config_tiles
 @onready var railing = preload(\"res://scenes/railing.tscn\")
 @onready var fisherman_scene = load(\"res://scenes/fisherman.tscn\")
 @onready var bench_scene = load(\"res://scenes/bench.tscn\")
+@onready var feather_scene = load(\"res://scenes/feather_2.tscn\")
 @onready var add_railing = true
 @onready var needed_tiles: Dictionary = {
 	\"0\":0,
@@ -29,17 +30,10 @@ var config_tiles
 
 @onready var plank_build_dict : Dictionary = {
 	\"fisherman\": ((randi() % 89) + 10),
-	\"feather\" : ((randi() % 259) + 140),
-	\"bench_left\" : ((randi() % 9) + 10),
-	\"bench_right\" : ((randi() % 9) + 10),
+	\"feather\" : ((randi() % 9)),
+	\"bench_left\" : ((randi() % 99) + 10),
+	\"bench_right\" : ((randi() % 99) + 10),
 }
-
-##Tile Delay
-#@onready var fisherman_tile_delay = ((randi() % 99) + 10) * 7
-##Powerup Delay
-#@onready var feather_delay: int = ((randi() % 259) + 140) * 7
-##Decoration Delay
-#@onready var bench_delay: int = ((randi() % 29) + 10) * 7
 
 signal death_signal
 
@@ -57,12 +51,6 @@ func _ready() -> void:
 		add_railing = !add_railing
 		add_child(plank_inst)
 		plank_arr.push_back(plank_inst)
-		#if i==0:
-			#current_plank = plank_inst.tile_arr
-		#elif i==1:
-			#next_plank  = plank_inst.tile_arr
-	#for i in plank_arr:
-		#print(i.tile_arr)
 	pass # Replace with function body.
 
 #Random number generation: nd(d) + x
@@ -116,15 +104,14 @@ func _on_main_create_plank() -> void:
 					plank_inst.add_bench(1, bench_scene)
 					plank_build_dict['bench_right'] = _random_decoration_num(4,40,20)
 				\"feather\":
-					pass
+					plank_inst.add_feather(feather_scene)
+					plank_build_dict['feather'] = _random_decoration_num(5,50,45)
 		
 		#Hazard tile subtraction
 	for key in plank_build_dict:
 		plank_build_dict[key] -= 1
 	
 	add_child(plank_inst)
-	#current_plank = plank_arr[6].tile_arr
-	#next_plank = plank_arr[7].tile_arr
 	last_plank_pos += 1
 	plank_arr.push_back(plank_inst)
 	

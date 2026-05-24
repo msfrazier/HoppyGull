@@ -40,7 +40,6 @@ func _on_moving_plank_wobble_timer_stop() -> void:
 
 [node name="main" type="Node3D"]
 script = ExtResource("1_tefeu")
-god_mode = true
 
 [node name="state_machine" parent="." instance=ExtResource("2_o6xl0")]
 
@@ -79,7 +78,7 @@ current = true
 transform = Transform3D(-1, -4.7731515e-08, 7.3242354e-08, 0, 0.83779496, 0.5459849, -8.742277e-08, 0.5459849, -0.83779496, 0, 7.022907, -7.0364733)
 
 [node name="camera3" type="Camera3D" parent="gull"]
-transform = Transform3D(-1, -4.7731522e-08, 7.324236e-08, -1.646232e-08, 0.9256198, 0.37845477, -8.58588e-08, 0.37845477, -0.9256198, 0, 2.6875186, -1.8547182)
+transform = Transform3D(-1, -4.7731533e-08, 7.3242354e-08, -5.7186192e-08, 0.9908377, -0.13505843, -6.6124734e-08, -0.13505843, -0.9908377, 0, 0.28613794, -1.8547182)
 
 [node name="ocean" parent="gull" instance=ExtResource("7_o6xl0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.688, 0)

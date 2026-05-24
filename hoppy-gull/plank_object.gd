@@ -112,3 +112,9 @@ func add_bench(tile: int, bench_scene):
 		bench.get_child(0).rotation_degrees.y = -90
 		get_node("plank_object/tile_6").add_child(bench)
 	pass
+	
+func add_feather(feather_scene):
+	var feather_tile = _get_tile_arr_indx().pick_random()+1
+	var feather = feather_scene.instantiate()
+	get_node("plank_object/tile_{0}".format([feather_tile])).add_child(feather)
+	pass

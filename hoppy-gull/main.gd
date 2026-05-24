@@ -72,7 +72,7 @@ func _on_gull_check_position(final_position: Vector3, movement_state: int):
 		var tween = get_tree().create_tween().set_loops(gull.fly_dist)
 		tween.tween_callback(
 			fly_score_create_plank
-		).set_delay(1.0/gull.fly_dist)
+		).set_delay(gull.SPEED/gull.fly_dist)
 		state_machine.set_state("forward")
 	
 	pass # Replace with function body.

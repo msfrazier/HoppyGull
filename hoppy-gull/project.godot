@@ -55,6 +55,10 @@ fly={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_4="PowerUp"
+
 [physics]
 
 common/physics_ticks_per_second=120

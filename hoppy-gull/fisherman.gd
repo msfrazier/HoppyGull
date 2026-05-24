@@ -30,7 +30,6 @@ func _quadratic_bezier(t: float, p0: Vector3, p1: Vector3, p2: Vector3):
 	var q0 = p0.lerp(p1, t)
 	var q1 = p1.lerp(p2, t)
 	var r = q0.lerp(q1, t)
-	#print(r)
 	bobber.global_position = r
 	#return r
 
@@ -50,8 +49,6 @@ func _on_cast_timer_timeout() -> void:
 	pass
 
 func _on_lure_tile(lure_tile_pos: Vector3) -> void:
-	print(self.global_position)
-	print(lure_tile_pos)
 	lure_tile = lure_tile_pos
 	var tween = get_tree().create_tween().set_parallel()
 	tween.tween_method(
