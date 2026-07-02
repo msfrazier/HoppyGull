@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bc1vcnnjwo5be"]
+[gd_scene load_steps=11 format=3 uid="uid://bc1vcnnjwo5be"]
 
 [ext_resource type="Script" uid="uid://ck58xg1mvjsfn" path="res://main.gd" id="1_tefeu"]
 [ext_resource type="PackedScene" uid="uid://dj12r64mw1xl1" path="res://state_machine.tscn" id="2_o6xl0"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b7i6pr8saj2py" path="res://scenes/gull.tscn" id="6_tefeu"]
 [ext_resource type="PackedScene" uid="uid://c1bdtga7ncdtx" path="res://dock_2.tscn" id="6_ya4ey"]
 [ext_resource type="PackedScene" uid="uid://b7fs5jfjy0n50" path="res://scenes/ocean.tscn" id="7_o6xl0"]
+[ext_resource type="PackedScene" uid="uid://bm5e6sff5q7y6" path="res://scenes/dev_control.tscn" id="7_tipki"]
 
 [sub_resource type="Environment" id="Environment_kek77"]
 background_color = Color(1, 1, 1, 1)
@@ -35,6 +36,26 @@ func _on_alive_plank_wobble_timer_start() -> void:
 
 func _on_moving_plank_wobble_timer_stop() -> void:
 	self.stop()
+	pass # Replace with function body.
+"
+
+[sub_resource type="GDScript" id="GDScript_o6xl0"]
+script/source = "extends Camera3D
+
+@onready var stat_position = self.position
+@onready var target_position = self.position
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+func _on_v_scroll_bar_value_changed(value: float) -> void:
+	
 	pass # Replace with function body.
 "
 
@@ -73,6 +94,7 @@ script = SubResource("GDScript_kek77")
 [node name="camera" type="Camera3D" parent="gull"]
 transform = Transform3D(-1, -4.7731522e-08, 7.324236e-08, 4.5598885e-08, 0.43002275, 0.902818, -7.458876e-08, 0.902818, -0.43002275, 0, 3.0603213, -1.2919896)
 current = true
+script = SubResource("GDScript_o6xl0")
 
 [node name="camera2" type="Camera3D" parent="gull"]
 transform = Transform3D(-1, -4.7731515e-08, 7.3242354e-08, 0, 0.83779496, 0.5459849, -8.742277e-08, 0.5459849, -0.83779496, 0, 7.022907, -7.0364733)
@@ -82,6 +104,8 @@ transform = Transform3D(-1, -4.7731533e-08, 7.3242354e-08, -5.7186192e-08, 0.990
 
 [node name="ocean" parent="gull" instance=ExtResource("7_o6xl0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.688, 0)
+
+[node name="dev_control" parent="." instance=ExtResource("7_tipki")]
 
 [connection signal="create_plank" from="." to="dock_2" method="_on_main_create_plank"]
 [connection signal="increase_score" from="." to="score_control/VBoxContainer/score_label" method="_on_main_increase_score"]
@@ -97,6 +121,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.688, 0)
 [connection signal="item_pickup" from="gull" to="score_control/VBoxContainer/score_label" method="_on_gull_item_pickup"]
 [connection signal="trigger_kill_screen" from="gull" to="." method="_trigger_kill_screen"]
 [connection signal="use_fly_skill" from="gull" to="score_control/VBoxContainer/feather_ui" method="_on_gull_use_fly_skill"]
+[connection signal="value_changed" from="dev_control/HBoxContainer/VScrollBar" to="." method="_on_v_scroll_bar_value_changed"]
+[connection signal="value_changed" from="dev_control/HBoxContainer/VScrollBar" to="gull/camera" method="_on_v_scroll_bar_value_changed"]
 
 [editable path="state_machine"]
 [editable path="score_control"]
+[editable path="dev_control"]

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cijh87mxnm8bn"
-path="res://.godot/imported/gull+rig.glb-00e8a7b7f9ac882450fcf98b12d1988f.scn"
+uid="uid://dci1tcsj57wkw"
+path="res://.godot/imported/crab.glb-67a2f1f9c3ffcf804266e306399af33c.scn"
 
 [deps]
 
-source_file="res://mesh/gull+rig.glb"
-dest_files=["res://.godot/imported/gull+rig.glb-00e8a7b7f9ac882450fcf98b12d1988f.scn"]
+source_file="res://mesh/crab.glb"
+dest_files=["res://.godot/imported/crab.glb-67a2f1f9c3ffcf804266e306399af33c.scn"]
 
 [params]
 
@@ -32,7 +32,7 @@ animation/import=true
 animation/fps=30
 animation/trimming=false
 animation/remove_immutable_tracks=true
-animation/import_rest_as_RESET=true
+animation/import_rest_as_RESET=false
 import_script/path=""
 materials/extract=0
 materials/extract_format=0
