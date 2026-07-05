@@ -17,6 +17,7 @@ var config_tiles
 @onready var fisherman_scene = load(\"res://scenes/fisherman.tscn\")
 @onready var bench_scene = load(\"res://scenes/bench.tscn\")
 @onready var feather_scene = load(\"res://scenes/feather_2.tscn\")
+@onready var crab_scene = load(\"res://scenes/crab.tscn\")
 @onready var add_railing = true
 @onready var needed_tiles: Dictionary = {
 	\"0\":0,
@@ -30,9 +31,10 @@ var config_tiles
 
 @onready var plank_build_dict : Dictionary = {
 	\"fisherman\": ((randi() % 89) + 10),
-	\"feather\" : ((randi() % 9)),
+	\"feather\" : ((randi() % 129)),
 	\"bench_left\" : ((randi() % 99) + 10),
 	\"bench_right\" : ((randi() % 99) + 10),
+	\"crab\": (0)
 }
 
 signal death_signal
@@ -106,7 +108,9 @@ func _on_main_create_plank() -> void:
 				\"feather\":
 					plank_inst.add_feather(feather_scene)
 					plank_build_dict['feather'] = _random_decoration_num(5,50,45)
-		
+				\"crab\":
+					plank_inst.add_crab(crab_scene)
+					plank_build_dict['crab'] = _random_decoration_num(4,40,20)
 		#Hazard tile subtraction
 	for key in plank_build_dict:
 		plank_build_dict[key] -= 1

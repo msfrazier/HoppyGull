@@ -21,6 +21,9 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+	
+func unfreeze_rigid_body():
+	self.freeze = false
 "
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dyfvl"]
@@ -73,6 +76,7 @@ shadow_mesh = SubResource("ArrayMesh_dygdd")
 collision_mask = 6
 gravity_scale = 0.5
 sleeping = true
+freeze = true
 script = SubResource("GDScript_naffu")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

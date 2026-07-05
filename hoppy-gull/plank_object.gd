@@ -17,6 +17,7 @@ var config_tiles
 
 signal check_char_fell
 signal lure_tile_signal
+signal unfreeze_rigid_bodies
 
 func _ready() -> void:
 	config_tiles = config.load("res://config.cfg")
@@ -40,6 +41,7 @@ func build_plank(tile_arr):
 			var rounded_plank_tile = rounded_plank_tile_scene.instantiate()
 			rounded_plank_tile.set_freeze_enabled(true)
 			get_node("plank_object/tile_{0}".format([tile+1])).add_child(rounded_plank_tile)
+			unfreeze_rigid_bodies.connect(rounded_plank_tile.unfreeze_rigid_body.bind())
 		#if tile_arr[tile]==2:
 			#var fisherman = fisherman_scene.instantiate()
 			#if tile==0:
@@ -58,12 +60,9 @@ func build_plank(tile_arr):
 
 func _on_plank_fall_timer_timeout() -> void:
 	animation_player.stop()
-	#animation_player.play("fall")
 	plank_object_col.disabled = true
-	for tile in plank_object.get_children():
-		if tile.get_node("plank") != null:
-			tile.get_node("plank").freeze = false
-	
+	unfreeze_rigid_bodies.emit()
+
 	check_char_fell.emit(self)
 	pass # Replace with function body.
 	
@@ -117,4 +116,11 @@ func add_feather(feather_scene):
 	var feather_tile = _get_tile_arr_indx().pick_random()+1
 	var feather = feather_scene.instantiate()
 	get_node("plank_object/tile_{0}".format([feather_tile])).add_child(feather)
+	pass
+	
+func add_crab(crab_scene):
+	var crab_tile = _get_tile_arr_indx().pick_random()+1
+	var crab = crab_scene.instantiate()
+	get_node("plank_object/tile_{0}".format([crab_tile])).add_child(crab)
+	unfreeze_rigid_bodies.connect(crab.unfreeze.bind())
 	pass

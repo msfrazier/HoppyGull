@@ -135,6 +135,10 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 			else:
 				item_pickup.emit(10)
 			body.queue_free()
+		\"crab_rigid\":
+			trigger_kill_screen.emit()
+		\"bobber\":
+			trigger_kill_screen.emit()
 	pass # Replace with function body.
 
 
