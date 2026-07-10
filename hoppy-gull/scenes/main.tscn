@@ -94,6 +94,7 @@ script = SubResource("GDScript_kek77")
 [node name="camera" type="Camera3D" parent="gull"]
 transform = Transform3D(-1, -4.7731522e-08, 7.324236e-08, 4.5598885e-08, 0.43002275, 0.902818, -7.458876e-08, 0.902818, -0.43002275, 0, 3.0603213, -1.2919896)
 current = true
+size = 0.08
 script = SubResource("GDScript_o6xl0")
 
 [node name="camera2" type="Camera3D" parent="gull"]
@@ -106,6 +107,7 @@ transform = Transform3D(-1, -4.7731533e-08, 7.3242354e-08, -5.7186192e-08, 0.990
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.688, 0)
 
 [node name="dev_control" parent="." instance=ExtResource("7_tipki")]
+visible = false
 
 [connection signal="create_plank" from="." to="dock_2" method="_on_main_create_plank"]
 [connection signal="increase_score" from="." to="score_control/VBoxContainer/score_label" method="_on_main_increase_score"]

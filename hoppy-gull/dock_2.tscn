@@ -34,7 +34,7 @@ var config_tiles
 	\"feather\" : ((randi() % 129)),
 	\"bench_left\" : ((randi() % 99) + 10),
 	\"bench_right\" : ((randi() % 99) + 10),
-	\"crab\": (0)
+	\"crab\": ((randi() % 99) + 45)
 }
 
 signal death_signal
