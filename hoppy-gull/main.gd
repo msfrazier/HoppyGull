@@ -10,6 +10,8 @@ extends Node3D
 @onready var state_machine: StateMachine
 
 var config: ConfigFile
+var curr_camera: Camera3D
+var curr_camera_pos: Vector3
 
 signal increase_score
 signal create_plank()
@@ -23,6 +25,9 @@ func _ready() -> void:
 	screen_size = get_viewport().get_visible_rect().size
 	
 	config = ConfigFile.new()
+	
+	curr_camera = get_viewport().get_camera_3d()
+	curr_camera_pos = curr_camera.get_position()
 #
 	#config.set_value('tiles','HOLE_TILE', 0)
 	#config.set_value('tiles','EMPTY_TILE', 1)
@@ -60,7 +65,7 @@ func _on_gull_check_position(final_position: Vector3, movement_state: int):
 		pass
 	#print(check_tile)
 	if check_tile == config.get_value('tiles','HOLE_TILE'):
-		_trigger_kill_screen()
+		_trigger_fall_death()
 	elif check_tile == config.get_value('tiles','FISHERMAN_TILE'):
 		print("blocked")
 		pass
@@ -88,8 +93,19 @@ func _on_retry_button_button_down() -> void:
 func _on_quit_button_button_down() -> void:
 	get_tree().quit()
 
-
+##Kill screen that occurs when 
 func _trigger_kill_screen():
 	if !god_mode:
 		kill_screen_trigger.emit(screen_size)
 		state_machine.set_state('kill')
+		
+func _trigger_fall_death():
+	if !god_mode:
+		kill_screen_trigger.emit(screen_size)
+		state_machine.set_state('kill')
+
+
+func _on_v_scroll_bar_value_changed(value: float) -> void:
+	var project_ray_normal = curr_camera.project_ray_normal(Vector2(screen_size.x/2,screen_size.y/2))
+	curr_camera.position = (project_ray_normal*-value)+curr_camera_pos
+	pass # Replace with function body.

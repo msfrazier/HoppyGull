@@ -49,9 +49,8 @@ layout_mode = 2
 size_flags_horizontal = 1
 min_value = -10.0
 max_value = 10.0
-step = 1.0
+step = 0.1
 page = 2.0
-rounded = true
 
 [node name="Label" type="Label" parent="HBoxContainer"]
 layout_mode = 2

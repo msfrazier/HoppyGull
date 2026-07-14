@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bc1vcnnjwo5be"]
+[gd_scene load_steps=12 format=3 uid="uid://bc1vcnnjwo5be"]
 
 [ext_resource type="Script" uid="uid://ck58xg1mvjsfn" path="res://main.gd" id="1_tefeu"]
 [ext_resource type="PackedScene" uid="uid://dj12r64mw1xl1" path="res://state_machine.tscn" id="2_o6xl0"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://c1bdtga7ncdtx" path="res://dock_2.tscn" id="6_ya4ey"]
 [ext_resource type="PackedScene" uid="uid://b7fs5jfjy0n50" path="res://scenes/ocean.tscn" id="7_o6xl0"]
 [ext_resource type="PackedScene" uid="uid://bm5e6sff5q7y6" path="res://scenes/dev_control.tscn" id="7_tipki"]
+[ext_resource type="PackedScene" uid="uid://bdvlfvj2qqnit" path="res://scenes/paper_soda_cup.tscn" id="8_tipki"]
 
 [sub_resource type="Environment" id="Environment_kek77"]
 background_color = Color(1, 1, 1, 1)
@@ -107,7 +108,9 @@ transform = Transform3D(-1, -4.7731533e-08, 7.3242354e-08, -5.7186192e-08, 0.990
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.688, 0)
 
 [node name="dev_control" parent="." instance=ExtResource("7_tipki")]
-visible = false
+
+[node name="Node3D" parent="." instance=ExtResource("8_tipki")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.103027344, 1.5651493)
 
 [connection signal="create_plank" from="." to="dock_2" method="_on_main_create_plank"]
 [connection signal="increase_score" from="." to="score_control/VBoxContainer/score_label" method="_on_main_increase_score"]
